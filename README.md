@@ -55,3 +55,12 @@ npm run dev
 * 播放器内核实现
 * 个人歌曲管理
 * 等等
+###项目预览
+***
+**路由主页面**
+
+![这里写图片描述](http://img.blog.csdn.net/20170626095122686?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzU4NDQxNzc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+**播放器页面**
+
+![这里写图片描述](http://img.blog.csdn.net/20170626095429589?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzU4NDQxNzc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
