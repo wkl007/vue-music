@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "commit": "git-cz",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "npm run lint:code && npm run lint:style",
@@ -24,16 +25,28 @@
     }
   },
   "dependencies": {
+    "@better-scroll/core": "^2.2.1",
+    "@better-scroll/observe-dom": "^2.2.1",
+    "@better-scroll/pull-up": "^2.2.1",
+    "@better-scroll/slide": "^2.2.1",
+    "axios": "^0.21.1",
     "core-js": "^3.8.3",
+    "create-keyframe-animation": "^0.1.0",
+    "good-storage": "^1.1.1",
+    "lyric-parser": "^1.0.1",
     "register-service-worker": "^1.7.2",
+    "throttle-debounce": "^3.0.1",
     "vue": "^3.0.4",
     "vue-router": "^4.0.3",
+    "vue3-lazy": "^1.0.0-alpha.1",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
     "@samhammer/vue-cli-plugin-stylelint": "^2.0.1",
+    "@types/good-storage": "^1.1.0",
+    "@types/lyric-parser": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
     "@vue/cli-plugin-babel": "~5.0.0-alpha.8",
@@ -63,6 +76,6 @@
     "stylelint-config-standard": "^21.0.0",
     "stylelint-order": "^4.1.0",
     "terser-webpack-plugin": "^5.1.1",
-    "typescript": "~4.1.5"
+    "typescript": "~4.2.3"
   }
 }
