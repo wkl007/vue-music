@@ -1,21 +1,18 @@
 <template>
   <v-header/>
-  <div id="nav">
-    <router-link to="/">Home</router-link>
-    |
-    <router-link to="/about">About</router-link>
-  </div>
+  <v-tab/>
   <router-view/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { VHeader } from '@/components'
+import { VHeader, VTab } from '@/components'
 
 export default defineComponent({
   name: 'App',
   components: {
-    VHeader
+    VHeader,
+    VTab
   }
 })
 </script>
