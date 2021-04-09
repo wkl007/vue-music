@@ -1,0 +1,29 @@
+// 单行文本超出显示省略号
+.text-overflow-hidden {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// 背景图片
+.bg-image(@url) {
+  background-image: ~"url('@{url}@2x.png')";
+
+  @media (-webkit-min-device-pixel-ratio: 3) {
+    background-image: ~"url('@{url}@3x.png')";
+  }
+}
+
+// 扩展小图标按钮的点击区域
+.extend-click() {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    bottom: -10px;
+    left: -10px;
+    content: '';
+  }
+}

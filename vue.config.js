@@ -81,7 +81,12 @@ module.exports = {
         lessOptions: {
           modifyVars: {},
           javascriptEnabled: true
-        }
+        },
+        // 全局引入变量和 mixin
+        additionalData: `
+          @import "@/assets/styles/variables.less";
+          @import "@/assets/styles/mixins.less";
+        `
       }
     }
   },

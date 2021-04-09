@@ -1,0 +1,43 @@
+body,
+html {
+  color: @color-text;
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback';
+  line-height: 1;
+  background: @color-background;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.g-relative {
+  position: relative;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translate3d(100%, 0, 0);
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s;
+}
+
+.list-enter-from,
+.list-leave-to {
+  height: 0 !important;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
