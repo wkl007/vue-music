@@ -30,16 +30,20 @@
     "@better-scroll/pull-up": "^2.2.1",
     "@better-scroll/slide": "^2.2.1",
     "axios": "^0.21.1",
+    "cookie-parser": "^1.4.5",
     "core-js": "^3.8.3",
     "create-keyframe-animation": "^0.1.0",
     "good-storage": "^1.1.1",
+    "js-base64": "^3.6.0",
     "lyric-parser": "^1.0.1",
+    "pinyin": "^2.10.2",
     "register-service-worker": "^1.7.2",
     "throttle-debounce": "^3.0.1",
     "vue": "^3.0.4",
     "vue-router": "^4.0.3",
     "vue3-lazy": "^1.0.0-alpha.1",
-    "vuex": "^4.0.0"
+    "vuex": "^4.0.0",
+    "xsrf": "^1.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",

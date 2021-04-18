@@ -3,6 +3,8 @@ const path = require('path')
 const TerserPlugin = require('terser-webpack-plugin') // 去console插件
 const CompressionWebpackPlugin = require('compression-webpack-plugin') // gzip压缩插件
 
+const registerRouter = require('./backend/router')
+
 const resolve = dir => path.join(__dirname, dir)
 
 module.exports = {
@@ -102,7 +104,7 @@ module.exports = {
     https: false,
     hotOnly: false,
     proxy: null, // 设置代理
-    before: app => {}
+    before: app => registerRouter(app)
   },
   // 使用ts-import-plugin parallel设置为false，原因参考https://www.jianshu.com/p/201ed7363a56
   parallel: false,
