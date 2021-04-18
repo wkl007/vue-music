@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { AlbumReq, AlbumResp, RecommendResp } from '@/types/api/recommend'
+import type { AlbumReq, AlbumResp, RecommendResp } from '@/types/api/recommend'
 
 export default class RecommendServer {
   // 获取推荐信息
