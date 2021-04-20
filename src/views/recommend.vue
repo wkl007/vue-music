@@ -22,7 +22,7 @@
                 <img
                   width="60"
                   height="60"
-                  :src="item.pic"
+                  v-lazy="item.pic"
                   alt=""
                 >
               </div>
