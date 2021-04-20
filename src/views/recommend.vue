@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" v-loading="loading">
     <scroll class="recommend-content">
       <div>
         <div class="slider-wrapper">
@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
+          <h1 class="list-title" v-show="!loading">热门歌单推荐</h1>
           <ul>
             <li
               class="item"
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue'
+import { computed, defineComponent, onMounted, reactive } from 'vue'
 import { Slider, Scroll } from '@/components'
 import type { RecommendResp } from '@/types/api/recommend'
 import RecommendServer from '@/api/recommend'
@@ -56,6 +56,8 @@ export default defineComponent({
       albums: []
     })
 
+    const loading = computed(() => !state.sliders.length && !state.albums.length)
+
     async function fetchData () {
       const { sliders, albums } = await RecommendServer.getRecommend()
       state.sliders = sliders
@@ -67,7 +69,8 @@ export default defineComponent({
     })
 
     return {
-      state
+      state,
+      loading
     }
   }
 })
