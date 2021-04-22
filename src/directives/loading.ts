@@ -6,7 +6,6 @@ const relativeCls = 'g-relative'
 
 const loadingDirective: Directive = {
   mounted (el, binding) {
-    console.log(el, binding)
     const app = createApp(Loading)
     el.instance = app.mount(document.createElement('div'))
     const title = binding.arg
