@@ -31,9 +31,22 @@
     >
       <div class="fixed-title">{{ fixedTitle }}</div>
     </div>
-    <div class="shortcut">
+    <div
+      class="shortcut"
+      @touchstart.stop.prevent="onShortcutTouchStart"
+      @touchmove.stop.prevent="onShortcutTouchMove"
+      @touchend.stop.prevent
+    >
       <ul>
-        <li></li>
+        <li
+          class="item"
+          v-for="(item,index) in shortcutList"
+          :key="item"
+          :data-index="index"
+          :class="{'current':currentIndex===index}"
+        >
+          {{ item }}
+        </li>
       </ul>
     </div>
   </scroll>
@@ -44,6 +57,7 @@ import { defineComponent, PropType } from 'vue'
 import Scroll from '@/components/base/scroll/index.vue'
 import type { Singer } from '@/types/api/singer'
 import { useFixed } from './use-fixed'
+import { useShortcut } from './use-shortcut'
 
 export default defineComponent({
   name: 'IndexList',
@@ -57,13 +71,20 @@ export default defineComponent({
     }
   },
   setup (props, { emit }) {
-    const { groupRef, onScroll, fixedTitle, fixedStyle } = useFixed(props)
+    const { groupRef, onScroll, fixedTitle, fixedStyle, currentIndex } = useFixed(props)
+    const { shortcutList, scrollRef, onShortcutTouchStart, onShortcutTouchMove } = useShortcut(props, groupRef)
+
     return {
       groupRef,
       fixedTitle,
       fixedStyle,
+      currentIndex,
+      shortcutList,
+      scrollRef,
 
-      onScroll
+      onScroll,
+      onShortcutTouchStart,
+      onShortcutTouchMove
     }
   }
 })
