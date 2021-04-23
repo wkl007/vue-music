@@ -7,10 +7,15 @@ interface Props {
 }
 
 interface UseFixed {
+  /** 父级容器 */
   groupRef: Ref<HTMLDivElement>;
+  /** 固定标题 */
   fixedTitle: ComputedRef<string>;
+  /** 推顶样式 */
   fixedStyle: ComputedRef<CSSProperties>;
+  /** 当前组索引 */
   currentIndex: Ref<number>;
+  /** 滚动事件 */
   onScroll: (pos: Position) => void;
 }
 
@@ -45,8 +50,11 @@ export function useFixed (props: Props): UseFixed {
   watch(scrollY, (newY) => {
     const listHeightsVal = listHeights.value
     for (let i = 0; i < listHeightsVal.length - 1; i++) {
+      // 区间顶部
       const heightTop = listHeightsVal[i]
+      // 区间底部
       const heightBottom = listHeightsVal[i + 1]
+      // 判断 scrollY 有没有在区间内
       if (newY >= heightTop && newY <= heightBottom) {
         currentIndex.value = i
         distance.value = heightBottom - newY
@@ -54,7 +62,7 @@ export function useFixed (props: Props): UseFixed {
     }
   })
 
-  // 计算每个组的高度
+  /** 计算每个组的高度 */
   function calculate (): void {
     const list = groupRef.value.children
     const listHeightsVal = listHeights.value
@@ -69,7 +77,7 @@ export function useFixed (props: Props): UseFixed {
     }
   }
 
-  // 滚动监听
+  /** 滚动监听 */
   function onScroll (pos: Position): void {
     scrollY.value = -pos.y
   }

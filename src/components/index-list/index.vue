@@ -26,8 +26,10 @@
     </ul>
     <div
       class="fixed"
+      :style="fixedStyle"
+      v-show="fixedTitle"
     >
-      <div class="fixed-title"></div>
+      <div class="fixed-title">{{ fixedTitle }}</div>
     </div>
     <div class="shortcut">
       <ul>
@@ -55,9 +57,11 @@ export default defineComponent({
     }
   },
   setup (props, { emit }) {
-    const { groupRef, onScroll } = useFixed(props)
+    const { groupRef, onScroll, fixedTitle, fixedStyle } = useFixed(props)
     return {
       groupRef,
+      fixedTitle,
+      fixedStyle,
 
       onScroll
     }
