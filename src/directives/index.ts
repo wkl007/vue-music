@@ -1,5 +1,6 @@
 import type { App } from 'vue'
 import { setupLoadingDirective } from './loading'
+import { setupNoResultDirective } from './no-result'
 
 /**
  * 注册全局指令
@@ -7,4 +8,5 @@ import { setupLoadingDirective } from './loading'
  */
 export function setupDirective (app: App<Element>): void {
   setupLoadingDirective(app)
+  setupNoResultDirective(app)
 }

@@ -35,6 +35,7 @@
       :style="scrollStyle"
       :probe-type="3"
       v-loading="loading"
+      v-no-result:[noResultText]="noResult"
       @scroll="onScroll"
     >
       <div class="song-list-wrapper">
@@ -49,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, PropType, reactive, Ref, ref, toRefs } from 'vue'
+import { computed, ComputedRef, defineComponent, onMounted, PropType, reactive, Ref, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import type { Song } from '@/types/api/recommend'
 import Scroll from '../base/scroll/index.vue'
@@ -67,6 +68,8 @@ interface State {
   maxTranslateY: number;
   /** 头图实例 */
   bgImageRef: Ref<HTMLDivElement>;
+  /** 没有结果 */
+  noResult: ComputedRef<boolean>;
 }
 
 export default defineComponent({
@@ -113,15 +116,16 @@ export default defineComponent({
       imageHeight: 0,
       scrollY: 0,
       maxTranslateY: 0,
-      bgImageRef: ref(document.createElement('div'))
+      bgImageRef: ref(document.createElement('div')),
+      noResult: computed(() => !props.loading && !props.songs.length)
     })
 
     /** 头图样式 */
     const bgImageStyle = computed(() => {
       const scrollY = state.scrollY
       let zIndex = 0
-      let paddingTop = '70%'
-      let height = 0
+      let paddingTop: string | number = '70%'
+      let height: string | number = '0'
       let translateZ = 0
 
       if (scrollY > state.maxTranslateY) {

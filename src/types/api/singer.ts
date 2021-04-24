@@ -2,6 +2,7 @@ export interface Singer {
   id: number;
   mid: string;
   name: string;
+  title?: string;
   pic: string;
 }
 

@@ -50,7 +50,7 @@ export default defineComponent({
       if (singer) {
         result = singer
       } else {
-        const cached = loadSessionStorage(SINGER_KEY)
+        const cached = loadSessionStorage(SINGER_KEY) as Singer
         if (cached && (cached.mid || String(cached.id)) === route.params.id) {
           result = cached
         }
@@ -65,7 +65,7 @@ export default defineComponent({
     async function fetchData () {
       try {
         state.loading = true
-        const res = await SingerServer.getSingerDetail({ mid: computedData.value.mid })
+        const res = await SingerServer.getSingerDetail({ mid: computedData.value?.mid as string })
         state.songs = await processSongs(res.songs)
         state.loading = false
       } catch (e) {}
