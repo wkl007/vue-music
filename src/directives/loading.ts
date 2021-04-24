@@ -1,4 +1,4 @@
-import { createApp, Directive, App } from 'vue'
+import { App, createApp, Directive } from 'vue'
 import Loading from '@/components/base/loading/index.vue'
 import { addClass, removeClass } from '@/utils/dom'
 

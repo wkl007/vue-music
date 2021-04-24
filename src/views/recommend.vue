@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive } from 'vue'
-import { Slider, Scroll } from '@/components'
+import { Scroll, Slider } from '@/components'
 import type { RecommendResp } from '@/types/api/recommend'
 import RecommendServer from '@/api/recommend'
 

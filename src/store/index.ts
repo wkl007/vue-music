@@ -1,5 +1,5 @@
 import type { App } from 'vue'
-import { createStore, createLogger } from 'vuex'
+import { createLogger, createStore } from 'vuex'
 import { NODE_ENV } from '@/utils/constants'
 
 // 调试工具，开发环境使用，线上关闭

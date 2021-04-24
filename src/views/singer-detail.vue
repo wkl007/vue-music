@@ -11,11 +11,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, PropType, reactive, toRefs } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { MusicList } from '@/components'
 import SingerServer from '@/api/singer'
 import type { Singer } from '@/types/api/singer'
 import type { Song } from '@/types/api/recommend'
 import { processSongs } from '@/api/song'
+import { SINGER_KEY } from '@/utils/constants'
+import { loadSessionStorage } from '@/utils/cache'
 
 interface State {
   songs: Song[];
@@ -34,28 +37,52 @@ export default defineComponent({
     }
   },
   setup (props) {
+    const route = useRoute()
+    const router = useRouter()
     const state = reactive<State>({
       songs: [],
       loading: true
     })
-    const pic = computed(() => props.singer?.pic)
-    const title = computed(() => props.singer?.name)
+
+    const computedData = computed(() => {
+      let result = null
+      const singer = props.singer
+      if (singer) {
+        result = singer
+      } else {
+        const cached = loadSessionStorage(SINGER_KEY)
+        if (cached && (cached.mid || String(cached.id)) === route.params.id) {
+          result = cached
+        }
+      }
+      return result
+    })
+
+    const pic = computed(() => computedData.value?.pic)
+
+    const title = computed(() => (computedData.value?.name || computedData.value?.title))
 
     async function fetchData () {
       try {
         state.loading = true
-        const res = await SingerServer.getSingerDetail({ mid: props.singer.mid })
+        const res = await SingerServer.getSingerDetail({ mid: computedData.value.mid })
         state.songs = await processSongs(res.songs)
         state.loading = false
       } catch (e) {}
     }
 
     onMounted(() => {
+      if (!computedData.value) {
+        const path = route.matched[0].path
+        router.push({ path })
+        return
+      }
       fetchData()
     })
 
     return {
       ...toRefs(state),
+      computedData,
       pic,
       title
     }
