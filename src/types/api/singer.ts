@@ -1,17 +1,17 @@
-export interface List {
+export interface Singer {
   id: number;
   mid: string;
   name: string;
   pic: string;
 }
 
-export interface Singer {
+export interface Singers {
   title: string;
-  list: List[];
+  list: Singer[];
 }
 
 export interface SingerListResp {
-  singers: Singer[];
+  singers: Singers[];
 }
 
 export interface SingerDetailReq {

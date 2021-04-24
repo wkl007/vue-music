@@ -1,9 +1,9 @@
 import { computed, ComputedRef, CSSProperties, nextTick, Ref, ref, watch } from 'vue'
-import type { Singer } from '@/types/api/singer'
+import type { Singers } from '@/types/api/singer'
 import type { Position } from '@better-scroll/slide/dist/types/SlidePages'
 
 interface Props {
-  data: Singer[];
+  data: Singers[];
 }
 
 interface UseFixed {

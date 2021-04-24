@@ -17,6 +17,7 @@
             class="item"
             v-for="item in group.list"
             :key="item.id"
+            @click="onItemClick(item)"
           >
             <img class="avatar" v-lazy="item.pic" alt="">
             <span class="name">{{ item.name }}</span>
@@ -55,7 +56,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import Scroll from '@/components/base/scroll/index.vue'
-import type { Singer } from '@/types/api/singer'
+import type { Singers, Singer } from '@/types/api/singer'
 import { useFixed } from './use-fixed'
 import { useShortcut } from './use-shortcut'
 
@@ -66,13 +67,19 @@ export default defineComponent({
   },
   props: {
     data: {
-      type: Array as PropType<Singer[]>,
+      type: Array as PropType<Singers[]>,
       default: () => []
     }
   },
+  emits: ['select'],
   setup (props, { emit }) {
     const { groupRef, onScroll, fixedTitle, fixedStyle, currentIndex } = useFixed(props)
     const { shortcutList, scrollRef, onShortcutTouchStart, onShortcutTouchMove } = useShortcut(props, groupRef)
+
+    /** 歌手点击事件 */
+    function onItemClick (item: Singer): void {
+      emit('select', item)
+    }
 
     return {
       groupRef,
@@ -84,7 +91,8 @@ export default defineComponent({
 
       onScroll,
       onShortcutTouchStart,
-      onShortcutTouchMove
+      onShortcutTouchMove,
+      onItemClick
     }
   }
 })

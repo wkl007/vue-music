@@ -1,5 +1,11 @@
+export interface SongUrlReq {
+  mid: string[];
+}
+
 export interface SongUrlResp {
-  [key: string]: string;
+  map: {
+    [key: string]: string;
+  }
 }
 
 export interface LyricResp {

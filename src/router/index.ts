@@ -14,7 +14,14 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/singer',
     name: 'Singer',
-    component: () => import(/* webpackChunkName: "singer" */ '@/views/singer.vue')
+    component: () => import(/* webpackChunkName: "singer" */ '@/views/singer.vue'),
+    children: [
+      {
+        path: '/singer/:id',
+        name: 'SingerDetail',
+        component: () => import(/* webpackChunkName: "singerDetail" */ '@/views/singer-detail.vue')
+      }
+    ]
   },
   {
     path: '/top-list',

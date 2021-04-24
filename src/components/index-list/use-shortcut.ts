@@ -1,8 +1,8 @@
 import { computed, ComputedRef, Ref, ref } from 'vue'
-import type { Singer } from '@/types/api/singer'
+import type { Singers } from '@/types/api/singer'
 
 interface Props {
-  data: Singer[];
+  data: Singers[];
 }
 
 interface UseShortcut {
