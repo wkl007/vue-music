@@ -51,11 +51,12 @@
 
 <script lang="ts">
 import { computed, ComputedRef, defineComponent, onMounted, PropType, reactive, Ref, ref, toRefs } from 'vue'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import type { Position } from '@better-scroll/slide/dist/types/SlidePages'
 import type { Song } from '@/types/api/recommend'
 import Scroll from '../base/scroll/index.vue'
 import SongList from '../base/song-list/index.vue'
-import type { Position } from '@better-scroll/slide/dist/types/SlidePages'
 
 const RESERVED_HEIGHT = 40 // 顶部高度
 
@@ -111,6 +112,7 @@ export default defineComponent({
     }
   },
   setup (props) {
+    const store = useStore()
     const router = useRouter()
     const state = reactive<State>({
       imageHeight: 0,
@@ -183,7 +185,7 @@ export default defineComponent({
     }
 
     function random () {
-
+      store.dispatch('randomPlay', { list: props.songs })
     }
 
     function onScroll (pos: Position): void {
@@ -191,7 +193,7 @@ export default defineComponent({
     }
 
     function selectItem ({ song, index }: { song: Song; index: number }) {
-
+      store.dispatch('selectPlay', { list: props.songs, index })
     }
 
     onMounted(() => {

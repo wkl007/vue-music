@@ -53,8 +53,8 @@ export default defineComponent({
       if (index > 2) return index + 1
     }
 
-    function selectItem (item: Song, index: number): void {
-      emit('select', { item, index })
+    function selectItem (song: Song, index: number): void {
+      emit('select', { song, index })
     }
 
     return {
