@@ -1,11 +1,12 @@
 import type { Commit } from 'vuex'
+import type { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
 
 export interface State {
   /** 歌曲列表 */
-  sequenceList: any[];
+  sequenceList: Song[];
   /** 播放列表 */
-  playList: any[];
+  playList: Song[];
   /** 播放状态 */
   playing: boolean;
   /** 播放模式 */
@@ -15,7 +16,7 @@ export interface State {
   /** 全屏状态 */
   fullScreen: boolean;
   /** 收藏列表 */
-  favoriteList: any[];
+  favoriteList: Song[];
 }
 
 export interface CommitFunction {

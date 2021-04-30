@@ -1,4 +1,5 @@
-import { CommitFunction } from '@/types/store'
+import type { CommitFunction } from '@/types/store'
+import type { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
 import * as types from './mutationTypes'
 import { shuffle } from '@/utils'
@@ -9,7 +10,7 @@ import { shuffle } from '@/utils'
  * @param list
  * @param index
  */
-export function selectPlay ({ commit }: CommitFunction, { list, index }: { list: any[], index: number }): void {
+export function selectPlay ({ commit }: CommitFunction, { list, index }: { list: Song[], index: number }): void {
   commit(types.SET_PLAY_MODE, PlayMode.SEQUENCE)
   commit(types.SET_SEQUENCE_LIST, list)
   commit(types.SET_PLAYING, true)
@@ -23,7 +24,7 @@ export function selectPlay ({ commit }: CommitFunction, { list, index }: { list:
  * @param commit
  * @param list
  */
-export function randomPlay ({ commit }: CommitFunction, { list }: { list: any[] }): void {
+export function randomPlay ({ commit }: CommitFunction, { list }: { list: Song[] }): void {
   commit(types.SET_PLAY_MODE, PlayMode.RANDOM)
   commit(types.SET_SEQUENCE_LIST, list)
   commit(types.SET_PLAYING, true)
