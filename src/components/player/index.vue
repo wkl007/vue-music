@@ -41,7 +41,7 @@
             <i class="icon-next" @click="next"></i>
           </div>
           <div class="icon i-right">
-            <i class="icon-not-favorite"></i>
+            <i :class="getFavoriteIcon(currentSong)" @click="toggleFavorite(currentSong)"></i>
           </div>
         </div>
       </div>
@@ -62,6 +62,7 @@ import { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
 import * as types from '@/store/mutationTypes'
 import { useMode } from './use-mode'
+import { useFavorite } from './use-favorite'
 
 interface State {
   /** audio 实例 */
@@ -96,6 +97,7 @@ export default defineComponent({
 
     // hooks
     const { modeIcon, changeMode } = useMode()
+    const { getFavoriteIcon, toggleFavorite } = useFavorite()
 
     /** 退出全屏 */
     function goBack (): void {
@@ -205,7 +207,9 @@ export default defineComponent({
       next,
       ready,
       error,
-      changeMode
+      changeMode,
+      getFavoriteIcon,
+      toggleFavorite
     }
   }
 })
