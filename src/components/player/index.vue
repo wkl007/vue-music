@@ -32,13 +32,13 @@
             <i class="icon-sequence"></i>
           </div>
           <div class="icon i-left">
-            <i class="icon-prev"></i>
+            <i class="icon-prev" @click="prev"></i>
           </div>
           <div class="icon i-center">
             <i :class="playIcon" @click="togglePlay"></i>
           </div>
           <div class="icon i-right">
-            <i class="icon-next"></i>
+            <i class="icon-next" @click="next"></i>
           </div>
           <div class="icon i-right">
             <i class="icon-not-favorite"></i>
@@ -75,6 +75,7 @@ export default defineComponent({
     const currentIndex = computed<number>(() => store.state.currentIndex)
     const playMode = computed<PlayMode>(() => store.state.playMode)
     const currentSong = computed<Song>(() => store.getters.currentSong)
+    const playList = computed<Song[]>(() => store.state.playList)
 
     // computed
     const playIcon = computed(() => playing.value ? 'icon-pause' : 'icon-play')
@@ -87,6 +88,50 @@ export default defineComponent({
     /** 播放/暂停 */
     function togglePlay (): void {
       store.commit(types.SET_PLAYING, !playing.value)
+    }
+
+    /** 上一首 */
+    function prev (): void {
+      const list = playList.value
+      if (!list.length) return
+      if (list.length === 1) {
+        loop()
+      } else {
+        let index = currentIndex.value - 1
+        if (index === -1) {
+          index = list.length - 1
+        }
+        store.commit(types.SET_CURRENT_INDEX, index)
+      }
+      if (!playing.value) {
+        store.commit(types.SET_PLAYING, true)
+      }
+    }
+
+    /** 下一首 */
+    function next (): void {
+      const list = playList.value
+      if (!list.length) return
+      if (list.length === 1) {
+        loop()
+      } else {
+        let index = currentIndex.value + 1
+        if (index === list.length) {
+          index = 0
+        }
+        store.commit(types.SET_CURRENT_INDEX, index)
+      }
+      if (!playing.value) {
+        store.commit(types.SET_PLAYING, true)
+      }
+    }
+
+    /** 循环播放 */
+    function loop (): void {
+      const audioEl = state.audioRef
+      audioEl.currentTime = 0
+      audioEl.play()
+      store.commit(types.SET_PLAYING, true)
     }
 
     /** 播放器暂停 */
@@ -122,7 +167,9 @@ export default defineComponent({
 
       goBack,
       togglePlay,
-      pause
+      pause,
+      prev,
+      next
     }
   }
 })
