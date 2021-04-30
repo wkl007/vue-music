@@ -29,7 +29,7 @@
         </div>
         <div class="operators">
           <div class="icon i-left">
-            <i class="icon-sequence"></i>
+            <i :class="modeIcon" @click="changeMode"></i>
           </div>
           <div class="icon i-left" :class="disableCls">
             <i class="icon-prev" @click="prev"></i>
@@ -56,11 +56,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, watch, ref, toRefs, Ref, ComputedRef, CSSProperties } from 'vue'
+import { computed, defineComponent, reactive, ref, Ref, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
 import { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
 import * as types from '@/store/mutationTypes'
+import { useMode } from './use-mode'
 
 interface State {
   /** audio 实例 */
@@ -92,6 +93,9 @@ export default defineComponent({
     // computed
     const playIcon = computed(() => playing.value ? 'icon-pause' : 'icon-play')
     const disableCls = computed(() => state.songReady ? '' : 'disable')
+
+    // hooks
+    const { modeIcon, changeMode } = useMode()
 
     /** 退出全屏 */
     function goBack (): void {
@@ -189,6 +193,7 @@ export default defineComponent({
       ...toRefs(state),
       fullScreen,
       currentSong,
+      modeIcon,
 
       playIcon,
       disableCls,
@@ -199,7 +204,8 @@ export default defineComponent({
       prev,
       next,
       ready,
-      error
+      error,
+      changeMode
     }
   }
 })

@@ -19,10 +19,18 @@ export interface State {
   favoriteList: Song[];
 }
 
+export interface Getters {
+  currentSong: Song;
+}
+
 export interface CommitFunction {
-  commit: Commit
+  commit: Commit;
 }
 
 export interface CommitStateFunction extends CommitFunction {
-  state: State
+  state: State;
+}
+
+export interface CommitStateGettersFunction extends CommitStateFunction {
+  getters: Getters;
 }
