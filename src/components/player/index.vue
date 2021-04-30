@@ -31,13 +31,13 @@
           <div class="icon i-left">
             <i class="icon-sequence"></i>
           </div>
-          <div class="icon i-left">
+          <div class="icon i-left" :class="disableCls">
             <i class="icon-prev" @click="prev"></i>
           </div>
-          <div class="icon i-center">
+          <div class="icon i-center" :class="disableCls">
             <i :class="playIcon" @click="togglePlay"></i>
           </div>
-          <div class="icon i-right">
+          <div class="icon i-right" :class="disableCls">
             <i class="icon-next" @click="next"></i>
           </div>
           <div class="icon i-right">
@@ -49,23 +49,35 @@
     <audio
       ref="audioRef"
       @pause="pause"
+      @canplay="ready"
+      @error="error"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, watch, ref, toRefs } from 'vue'
+import { computed, defineComponent, reactive, watch, ref, toRefs, Ref, ComputedRef, CSSProperties } from 'vue'
 import { useStore } from 'vuex'
 import { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
 import * as types from '@/store/mutationTypes'
 
+interface State {
+  /** audio 实例 */
+  audioRef: Ref<HTMLAudioElement>;
+  /** 进度条示例 */
+  barRef: Ref<HTMLDivElement>;
+  /** 可以播放 */
+  songReady: boolean;
+}
+
 export default defineComponent({
   name: 'Player',
   setup () {
-    const state = reactive({
-      audioRef: ref<HTMLAudioElement>(document.createElement('audio')),
-      barRef: ref(null)
+    const state = reactive<State>({
+      audioRef: ref(document.createElement('audio')),
+      barRef: ref(document.createElement('div')),
+      songReady: false
     })
 
     // vuex
@@ -79,6 +91,7 @@ export default defineComponent({
 
     // computed
     const playIcon = computed(() => playing.value ? 'icon-pause' : 'icon-play')
+    const disableCls = computed(() => state.songReady ? '' : 'disable')
 
     /** 退出全屏 */
     function goBack (): void {
@@ -87,13 +100,14 @@ export default defineComponent({
 
     /** 播放/暂停 */
     function togglePlay (): void {
+      if (!state.songReady) return
       store.commit(types.SET_PLAYING, !playing.value)
     }
 
     /** 上一首 */
     function prev (): void {
       const list = playList.value
-      if (!list.length) return
+      if (!list.length || !state.songReady) return
       if (list.length === 1) {
         loop()
       } else {
@@ -111,7 +125,7 @@ export default defineComponent({
     /** 下一首 */
     function next (): void {
       const list = playList.value
-      if (!list.length) return
+      if (!list.length || !state.songReady) return
       if (list.length === 1) {
         loop()
       } else {
@@ -139,9 +153,21 @@ export default defineComponent({
       store.commit(types.SET_PLAYING, false)
     }
 
+    /** 音频可以播放 */
+    function ready (): void {
+      if (state.songReady) return
+      state.songReady = true
+    }
+
+    /** 加载错误 */
+    function error (): void {
+      state.songReady = true
+    }
+
     /** 监听当前歌曲信息 */
     watch(currentSong, (newSong) => {
       if (!newSong.id || !newSong.url) return
+      state.songReady = false
       const audioEl = state.audioRef
       audioEl.src = newSong.url
       audioEl.play()
@@ -150,6 +176,7 @@ export default defineComponent({
 
     /** 监听播放状态 */
     watch(playing, (newPlaying) => {
+      if (!state.songReady) return
       const audioEl = state.audioRef
       if (newPlaying) {
         audioEl.play()
@@ -164,12 +191,15 @@ export default defineComponent({
       currentSong,
 
       playIcon,
+      disableCls,
 
       goBack,
       togglePlay,
       pause,
       prev,
-      next
+      next,
+      ready,
+      error
     }
   }
 })
