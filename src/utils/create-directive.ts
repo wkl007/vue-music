@@ -1,4 +1,4 @@
-import { createApp, Directive, Component } from 'vue'
+import { Component, createApp, Directive } from 'vue'
 import { addClass, removeClass } from '@/utils/dom'
 
 const relativeCls = 'g-relative'

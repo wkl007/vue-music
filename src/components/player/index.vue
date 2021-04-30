@@ -21,11 +21,16 @@
           <span class="dot"></span>
         </div>
         <div class="progress-wrapper">
-          <span class="time time-l"></span>
+          <span class="time time-l">{{ formatTime(currentTime) }}</span>
           <div class="progress-bar-wrapper">
-
+            <progress-bar
+              ref="barRef"
+              :progress="progress"
+              @progress-changing="onProgressChanging"
+              @progress-changed="onProgressChanged"
+            />
           </div>
-          <span class="time time-r"></span>
+          <span class="time time-r">{{ formatTime(currentSong.duration) }}</span>
         </div>
         <div class="operators">
           <div class="icon i-left">
@@ -51,6 +56,8 @@
       @pause="pause"
       @canplay="ready"
       @error="error"
+      @timeupdate="updateTime"
+      @ended="end"
     />
   </div>
 </template>
@@ -58,11 +65,13 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, Ref, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
+import ProgressBar from './progress-bar.vue'
 import { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
 import * as types from '@/store/mutationTypes'
 import { useMode } from './use-mode'
 import { useFavorite } from './use-favorite'
+import { formatTime } from '@/utils'
 
 interface State {
   /** audio 实例 */
@@ -71,16 +80,23 @@ interface State {
   barRef: Ref<HTMLDivElement>;
   /** 可以播放 */
   songReady: boolean;
+  /** 当前播放时间 */
+  currentTime: number;
 }
 
 export default defineComponent({
   name: 'Player',
+  components: {
+    ProgressBar
+  },
   setup () {
     const state = reactive<State>({
       audioRef: ref(document.createElement('audio')),
       barRef: ref(document.createElement('div')),
-      songReady: false
+      songReady: false,
+      currentTime: 0
     })
+    let progressChanging = false
 
     // vuex
     const store = useStore()
@@ -94,6 +110,7 @@ export default defineComponent({
     // computed
     const playIcon = computed(() => playing.value ? 'icon-pause' : 'icon-play')
     const disableCls = computed(() => state.songReady ? '' : 'disable')
+    const progress = computed(() => state.currentTime / currentSong.value.duration)
 
     // hooks
     const { modeIcon, changeMode } = useMode()
@@ -170,9 +187,41 @@ export default defineComponent({
       state.songReady = true
     }
 
+    /** 更新时间 */
+    function updateTime (): void {
+      if (progressChanging) return
+      state.currentTime = state.audioRef.currentTime
+    }
+
+    /** 播放结束 */
+    function end (): void {
+      state.currentTime = 0
+      if (playMode.value === PlayMode.LOOP) {
+        loop()
+      } else {
+        next()
+      }
+    }
+
+    /** 进度条拖动 */
+    function onProgressChanging (progress: number): void {
+      progressChanging = true
+      state.currentTime = currentSong.value.duration * progress
+    }
+
+    /** 进度条拖动结束 */
+    function onProgressChanged (progress: number): void {
+      progressChanging = false
+      state.audioRef.currentTime = state.currentTime = currentSong.value.duration * progress
+      if (!playing.value) {
+        store.commit(types.SET_PLAYING, true)
+      }
+    }
+
     /** 监听当前歌曲信息 */
     watch(currentSong, (newSong) => {
       if (!newSong.id || !newSong.url) return
+      state.currentTime = 0
       state.songReady = false
       const audioEl = state.audioRef
       audioEl.src = newSong.url
@@ -199,6 +248,7 @@ export default defineComponent({
 
       playIcon,
       disableCls,
+      progress,
 
       goBack,
       togglePlay,
@@ -207,9 +257,14 @@ export default defineComponent({
       next,
       ready,
       error,
+      updateTime,
+      end,
       changeMode,
       getFavoriteIcon,
-      toggleFavorite
+      toggleFavorite,
+      formatTime,
+      onProgressChanging,
+      onProgressChanged
     }
   }
 })

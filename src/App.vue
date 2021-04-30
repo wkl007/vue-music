@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, provide } from 'vue'
-import { VHeader, VTab, Player } from '@/components'
+import { Player, VHeader, VTab } from '@/components'
 import images from '@/assets/images'
 
 export default defineComponent({
