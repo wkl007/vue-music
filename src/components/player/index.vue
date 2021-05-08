@@ -14,7 +14,21 @@
         <h1 class="title">{{ currentSong.name }}</h1>
         <h2 class="subtitle">{{ currentSong.singer }}</h2>
       </div>
-      <div class="middle"></div>
+      <div class="middle">
+        <div class="middle-l">
+          <div ref="cdWrapperRef" class="cd-wrapper">
+            <div ref="cdRef" class="cd">
+              <img
+                ref="cdImageRef"
+                class="image"
+                :class="cdCls"
+                :src="currentSong.pic"
+                alt=""
+              >
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="bottom">
         <div class="dot-wrapper">
           <span class="dot"></span>
@@ -71,6 +85,7 @@ import { PlayMode } from '@/utils/constants'
 import * as types from '@/store/mutationTypes'
 import { useMode } from './use-mode'
 import { useFavorite } from './use-favorite'
+import { useCd } from './use-cd'
 import { formatTime } from '@/utils'
 
 interface State {
@@ -115,6 +130,7 @@ export default defineComponent({
     // hooks
     const { modeIcon, changeMode } = useMode()
     const { getFavoriteIcon, toggleFavorite } = useFavorite()
+    const { cdCls, cdRef, cdImageRef } = useCd()
 
     /** 退出全屏 */
     function goBack (): void {
@@ -249,6 +265,10 @@ export default defineComponent({
       playIcon,
       disableCls,
       progress,
+
+      cdCls,
+      cdRef,
+      cdImageRef,
 
       goBack,
       togglePlay,
