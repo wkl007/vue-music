@@ -15,7 +15,7 @@
         <h2 class="subtitle">{{ currentSong.singer }}</h2>
       </div>
       <div class="middle">
-        <div class="middle-l">
+        <div class="middle-l" style="display: none;">
           <div ref="cdWrapperRef" class="cd-wrapper">
             <div ref="cdRef" class="cd">
               <img
@@ -28,6 +28,27 @@
             </div>
           </div>
         </div>
+        <scroll
+          class="middle-r"
+          ref="lyricScrollRef"
+
+        >
+          <div class="lyric-wrapper">
+            <div v-if="currentLyric" ref="lyricListRef">
+              <p
+                class="text"
+                :class="{'current':currentLineNum===index}"
+                v-for="(item,index) in currentLyric.lines"
+                :key="index"
+              >
+                {{ item.txt }}
+              </p>
+            </div>
+            <div class="pure-music" v-show="pureMusicLyric">
+              <p>{{ pureMusicLyric }}</p>
+            </div>
+          </div>
+        </scroll>
       </div>
       <div class="bottom">
         <div class="dot-wrapper">
@@ -79,6 +100,7 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, Ref, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
+import { Scroll } from '@/components'
 import ProgressBar from './progress-bar.vue'
 import { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
@@ -86,6 +108,7 @@ import * as types from '@/store/mutationTypes'
 import { useMode } from './use-mode'
 import { useFavorite } from './use-favorite'
 import { useCd } from './use-cd'
+import { useLyric } from './use-lyric'
 import { formatTime } from '@/utils'
 
 interface State {
@@ -102,7 +125,8 @@ interface State {
 export default defineComponent({
   name: 'Player',
   components: {
-    ProgressBar
+    ProgressBar,
+    Scroll
   },
   setup () {
     const state = reactive<State>({
@@ -131,6 +155,7 @@ export default defineComponent({
     const { modeIcon, changeMode } = useMode()
     const { getFavoriteIcon, toggleFavorite } = useFavorite()
     const { cdCls, cdRef, cdImageRef } = useCd()
+    const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({ songReady: toRefs(state).songReady, currentTime: toRefs(state).currentTime })
 
     /** 退出全屏 */
     function goBack (): void {
@@ -196,6 +221,7 @@ export default defineComponent({
     function ready (): void {
       if (state.songReady) return
       state.songReady = true
+      playLyric()
     }
 
     /** 加载错误 */
@@ -223,6 +249,8 @@ export default defineComponent({
     function onProgressChanging (progress: number): void {
       progressChanging = true
       state.currentTime = currentSong.value.duration * progress
+      playLyric()
+      stopLyric()
     }
 
     /** 进度条拖动结束 */
@@ -232,6 +260,7 @@ export default defineComponent({
       if (!playing.value) {
         store.commit(types.SET_PLAYING, true)
       }
+      playLyric()
     }
 
     /** 监听当前歌曲信息 */
@@ -251,8 +280,10 @@ export default defineComponent({
       const audioEl = state.audioRef
       if (newPlaying) {
         audioEl.play()
+        playLyric()
       } else {
         audioEl.pause()
+        stopLyric()
       }
     })
 
@@ -269,6 +300,13 @@ export default defineComponent({
       cdCls,
       cdRef,
       cdImageRef,
+
+      currentLyric,
+      currentLineNum,
+      pureMusicLyric,
+      playingLyric,
+      lyricScrollRef,
+      lyricListRef,
 
       goBack,
       togglePlay,

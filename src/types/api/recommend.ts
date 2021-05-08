@@ -29,6 +29,7 @@ export interface Song {
   duration: number;
   pic: string;
   album: string;
+  lyric?: string;
 }
 
 export interface AlbumResp {
