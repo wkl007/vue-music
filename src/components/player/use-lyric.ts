@@ -1,5 +1,5 @@
 import { useStore } from 'vuex'
-import { computed, watch, reactive, ref, Ref } from 'vue'
+import { computed, ref, Ref, watch } from 'vue'
 import Lyric from 'lyric-parser'
 import { processLyric } from '@/api/song'
 import * as types from '@/store/mutationTypes'
@@ -57,10 +57,8 @@ export function useLyric ({ songReady, currentTime }: Props): UseLyric {
     const listEl = lyricListRef.value
     if (!listEl) return
     if (lineNum > 5) {
-      // @ts-ignore
-      // const lineEl = listEl.children(lineNum - 5)
-      // console.log(lineEl)
-      // scrollComp?.scroll.scrollToElement(lineEl, 1000)
+      const lineEl = listEl.children[lineNum - 5]
+      scrollComp?.scroll.scrollToElement(lineEl, 1000)
     } else {
       scrollComp?.scroll.scrollTo(0, 0, 1000)
     }
