@@ -81,7 +81,7 @@ export default defineComponent({
     }
 
     /** 点击 */
-    function onClick (e: Event) {
+    function onClick (e: MouseEvent) {
       const rect = progressBarRef.value.getBoundingClientRect()
       const offsetWidth = e.pageX - rect.left
       const barWidth = progressBarRef.value.clientWidth - progressBtnWidth
