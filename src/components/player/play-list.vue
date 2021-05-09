@@ -85,8 +85,8 @@ import { sleep } from '@/utils'
 
 interface State {
   scrollRef: BScrollConstructor | undefined;
-  listRef: HTMLDivElement;
-  confirmRef: HTMLDivElement;
+  listRef: any;
+  confirmRef: any;
   addSongRef: HTMLDivElement;
   visible: boolean;
   removing: boolean;
@@ -109,15 +109,15 @@ export default defineComponent({
       removing: false
     })
 
-    const playList = computed(() => store.state.playList)
-    const sequenceList = computed(() => store.state.sequenceList)
-    const currentSong = computed(() => store.getters.currentSong)
+    const playList = computed<Song[]>(() => store.state.playList)
+    const sequenceList = computed<Song[]>(() => store.state.sequenceList)
+    const currentSong = computed<Song>(() => store.getters.currentSong)
 
     const { modeIcon, modeText, changeMode } = useMode()
     const { getFavoriteIcon, toggleFavorite } = useFavorite()
 
     /** 显示 */
-    async function show (): void {
+    async function show (): Promise<void> {
       state.visible = true
 
       await nextTick()
@@ -139,7 +139,7 @@ export default defineComponent({
 
     /** 刷新 */
     function refreshScroll () {
-      state.scrollRef.scroll.refresh()
+      state.scrollRef?.scroll.refresh()
     }
 
     /** 滚动到当前播放位置 */
@@ -147,7 +147,7 @@ export default defineComponent({
       const index = sequenceList.value.findIndex(item => currentSong.value.id === item.id)
       if (index === -1) return
       const target = state.listRef.$el.children[index]
-      state.scrollRef.scroll.scrollToElement(target, 300)
+      state.scrollRef?.scroll.scrollToElement(target, 300)
     }
 
     /** 选中某项歌曲 */
@@ -159,7 +159,7 @@ export default defineComponent({
     }
 
     /** 移除歌曲 */
-    async function removeSong (song: Song): void {
+    async function removeSong (song: Song): Promise<void> {
       if (state.removing) return
       state.removing = true
       await store.dispatch('removeSong', song)
