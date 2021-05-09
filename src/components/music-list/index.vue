@@ -121,6 +121,7 @@ export default defineComponent({
       bgImageRef: document.createElement('div'),
       noResult: computed(() => !props.loading && !props.songs.length)
     })
+    const playList = computed(() => store.state.playList)
 
     /** 头图样式 */
     const bgImageStyle = computed(() => {
@@ -162,8 +163,10 @@ export default defineComponent({
 
     /** 滚动组件样式 */
     const scrollStyle = computed(() => {
+      const bottom = playList.value.length ? '60px' : '0'
       return {
-        top: `${state.imageHeight}px`
+        top: `${state.imageHeight}px`,
+        bottom
       }
     })
 
