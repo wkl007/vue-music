@@ -41,3 +41,11 @@ export function formatTime (interval: number): string {
   const second = (interval % 60 + '').padStart(2, '0')
   return `${minute}:${second}`
 }
+
+/**
+ * 睡眠函数
+ * @param timeout
+ */
+export function sleep (timeout: number): Promise<any> {
+  return new Promise(resolve => setTimeout(resolve, timeout))
+}

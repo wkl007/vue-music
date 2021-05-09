@@ -1,8 +1,9 @@
-import type { CommitFunction, CommitStateGettersFunction } from '@/types/store'
+import type { CommitFunction, CommitStateFunction, CommitStateGettersFunction } from '@/types/store'
 import type { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
 import * as types from './mutationTypes'
 import { shuffle } from '@/utils'
+import type { Commit } from 'vuex'
 
 /**
  * 顺序播放
@@ -51,4 +52,80 @@ export function changeMode ({ commit, state, getters }: CommitStateGettersFuncti
 
   commit(types.SET_CURRENT_INDEX, index)
   commit(types.SET_PLAY_MODE, mode)
+}
+
+/**
+ * 添加歌曲
+ * @param commit
+ * @param state
+ * @param song
+ */
+export function addSong ({ commit, state }: CommitStateFunction, song: Song): void {
+  const playList = state.playList.slice()
+  const sequenceList = state.sequenceList.slice()
+  let currentIndex = state.currentIndex
+  const playIndex = findIndex(playList, song)
+
+  if (playIndex > -1) {
+    currentIndex = playIndex
+  } else {
+    playList.push(song)
+    currentIndex = playList.length - 1
+  }
+
+  const sequenceIndex = findIndex(sequenceList, song)
+  if (sequenceIndex === -1) {
+    sequenceList.push(song)
+  }
+
+  commit(types.SET_SEQUENCE_LIST, sequenceList)
+  commit(types.SET_PLAY_LIST, playList)
+  commit(types.SET_CURRENT_INDEX, currentIndex)
+  commit(types.SET_PLAYING, true)
+  commit(types.SET_FULL_SCREEN, true)
+}
+
+/**
+ * 删除歌曲
+ * @param commit
+ * @param state
+ * @param song
+ */
+export function removeSong ({ commit, state }: CommitStateFunction, song: Song): void {
+  const sequenceList = state.sequenceList.slice()
+  const playList = state.playList.slice()
+
+  const sequenceIndex = findIndex(sequenceList, song)
+  const playIndex = findIndex(playList, song)
+  if (sequenceIndex < 0 || playIndex < 0) return
+
+  sequenceList.splice(sequenceIndex, 1)
+  playList.splice(playIndex, 1)
+
+  let currentIndex = state.currentIndex
+  if (playIndex < currentIndex || currentIndex === playList.length) {
+    currentIndex--
+  }
+
+  commit(types.SET_SEQUENCE_LIST, sequenceList)
+  commit(types.SET_PLAY_LIST, playList)
+  commit(types.SET_CURRENT_INDEX, currentIndex)
+  if (!playList.length) {
+    commit(types.SET_PLAYING, false)
+  }
+}
+
+/**
+ * 清空歌曲
+ * @param commit
+ */
+export function clearSongList ({ commit }: CommitFunction): void {
+  commit(types.SET_SEQUENCE_LIST, [])
+  commit(types.SET_PLAY_LIST, [])
+  commit(types.SET_CURRENT_INDEX, 0)
+  commit(types.SET_PLAYING, false)
+}
+
+function findIndex (list: Song[], song: Song): number {
+  return list.findIndex(item => item.id === song.id)
 }

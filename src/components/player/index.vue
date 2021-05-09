@@ -221,9 +221,6 @@ export default defineComponent({
         }
         store.commit(types.SET_CURRENT_INDEX, index)
       }
-      if (!playing.value) {
-        store.commit(types.SET_PLAYING, true)
-      }
     }
 
     /** 下一首 */
@@ -238,9 +235,6 @@ export default defineComponent({
           index = 0
         }
         store.commit(types.SET_CURRENT_INDEX, index)
-      }
-      if (!playing.value) {
-        store.commit(types.SET_PLAYING, true)
       }
     }
 

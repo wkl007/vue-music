@@ -46,9 +46,10 @@
           ></i>
         </progress-circle>
       </div>
-      <div class="control">
+      <div class="control" @click.stop="showPlayList">
         <i class="icon-playlist"></i>
       </div>
+      <play-list ref="playListRef"/>
     </div>
   </transition>
 </template>
@@ -60,11 +61,13 @@ import { useCd } from './use-cd'
 import { useMiniSlider } from './use-mini-slider'
 import * as types from '@/store/mutationTypes'
 import ProgressCircle from './progress-circle.vue'
+import PlayList from './play-list.vue'
 
 export default defineComponent({
   name: 'MiniPlayer',
   components: {
-    ProgressCircle
+    ProgressCircle,
+    PlayList
   },
   props: {
     progress: {
@@ -78,7 +81,7 @@ export default defineComponent({
   },
   setup () {
     const store = useStore()
-    const playListRef = ref(document.createElement('div'))
+    const playListRef = ref()
 
     const fullScreen = computed(() => store.state.fullScreen)
     const currentSong = computed(() => store.getters.currentSong)
@@ -94,6 +97,11 @@ export default defineComponent({
       store.commit(types.SET_FULL_SCREEN, true)
     }
 
+    /** 显示播放列表 */
+    function showPlayList (): void {
+      playListRef.value.show()
+    }
+
     return {
       playListRef,
       fullScreen,
@@ -106,7 +114,8 @@ export default defineComponent({
       cdImageRef,
       sliderWrapperRef,
 
-      showNormalPlayer
+      showNormalPlayer,
+      showPlayList
     }
   }
 })
