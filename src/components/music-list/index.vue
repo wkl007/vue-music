@@ -55,7 +55,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import type { Position } from '@better-scroll/slide/dist/types/SlidePages'
 import type { Song } from '@/types/api/recommend'
-import Scroll from '../base/scroll/index.vue'
+import Scroll from '../wrap-scroll/index'
 import SongList from '../base/song-list/index.vue'
 
 const RESERVED_HEIGHT = 40 // 顶部高度

@@ -55,7 +55,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import Scroll from '@/components/base/scroll/index.vue'
+import Scroll from '@/components/wrap-scroll/index'
 import type { Singer, Singers } from '@/types/api/singer'
 import { useFixed } from './use-fixed'
 import { useShortcut } from './use-shortcut'

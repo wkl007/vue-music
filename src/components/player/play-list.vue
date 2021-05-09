@@ -76,7 +76,7 @@ import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vu
 import { useStore } from 'vuex'
 import { useMode } from './use-mode'
 import { useFavorite } from './use-favorite'
-import Scroll from '@/components/base/scroll/index.vue'
+import Scroll from '@/components/wrap-scroll/index'
 import Confirm from '@/components/base/confirm/index.vue'
 import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
 import type { Song } from '@/types/api/recommend'
