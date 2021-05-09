@@ -15,7 +15,7 @@
         <h2 class="subtitle">{{ currentSong.singer }}</h2>
       </div>
       <div class="middle">
-        <div class="middle-l" style="display: none;">
+        <div class="middle-l">
           <div ref="cdWrapperRef" class="cd-wrapper">
             <div ref="cdRef" class="cd">
               <img
@@ -26,6 +26,9 @@
                 alt=""
               >
             </div>
+          </div>
+          <div class="playing-lyric-wrapper">
+            <div class="playing-lyric">{{playingLyric}}</div>
           </div>
         </div>
         <scroll
@@ -113,9 +116,9 @@ import { formatTime } from '@/utils'
 
 interface State {
   /** audio 实例 */
-  audioRef: Ref<HTMLAudioElement>;
+  audioRef: HTMLAudioElement;
   /** 进度条示例 */
-  barRef: Ref<HTMLDivElement>;
+  barRef: HTMLDivElement;
   /** 可以播放 */
   songReady: boolean;
   /** 当前播放时间 */
@@ -130,8 +133,8 @@ export default defineComponent({
   },
   setup () {
     const state = reactive<State>({
-      audioRef: ref(document.createElement('audio')),
-      barRef: ref(document.createElement('div')),
+      audioRef: document.createElement('audio'),
+      barRef: document.createElement('div'),
       songReady: false,
       currentTime: 0
     })
@@ -155,7 +158,8 @@ export default defineComponent({
     const { modeIcon, changeMode } = useMode()
     const { getFavoriteIcon, toggleFavorite } = useFavorite()
     const { cdCls, cdRef, cdImageRef } = useCd()
-    const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({ songReady: toRefs(state).songReady, currentTime: toRefs(state).currentTime })
+    const { songReady, currentTime } = toRefs(state)
+    const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({ songReady, currentTime })
 
     /** 退出全屏 */
     function goBack (): void {

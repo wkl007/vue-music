@@ -68,7 +68,7 @@ interface State {
   /** 最大滚动距离 */
   maxTranslateY: number;
   /** 头图实例 */
-  bgImageRef: Ref<HTMLDivElement>;
+  bgImageRef: HTMLDivElement;
   /** 没有结果 */
   noResult: ComputedRef<boolean>;
 }
@@ -118,7 +118,7 @@ export default defineComponent({
       imageHeight: 0,
       scrollY: 0,
       maxTranslateY: 0,
-      bgImageRef: ref(document.createElement('div')),
+      bgImageRef: document.createElement('div'),
       noResult: computed(() => !props.loading && !props.songs.length)
     })
 

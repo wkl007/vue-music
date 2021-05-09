@@ -6,9 +6,9 @@ import * as types from '@/store/mutationTypes'
 import { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
 
 interface Props {
-  /**  */
+  /** 可以播放 */
   songReady: Ref<boolean>;
-  /**  */
+  /** 当前播放时间 */
   currentTime: Ref<number>;
 }
 
@@ -17,13 +17,13 @@ interface UseLyric {
   currentLyric: Ref<Lyric | null>;
   /** 当前播放行号 */
   currentLineNum: Ref<number>;
-  /**  */
+  /** 纯音乐歌词 */
   pureMusicLyric: Ref<string>;
   /** 当前播放歌词 */
   playingLyric: Ref<string>;
-  /** 歌词滚动实例 */
+  /** 滚动组件实例 */
   lyricScrollRef: Ref<BScrollConstructor | undefined>;
-  /** 歌词列表实例 */
+  /** 列表 DOM 实例 */
   lyricListRef: Ref<HTMLDivElement>;
   /** 播放歌词 */
   playLyric: () => void;
@@ -42,14 +42,17 @@ export function useLyric ({ songReady, currentTime }: Props): UseLyric {
   const lyricScrollRef = ref<BScrollConstructor | undefined>()
   const lyricListRef = ref<HTMLDivElement>(document.createElement('div'))
 
+  /** 播放歌词 */
   function playLyric (): void {
     currentLyric.value?.seek(currentTime.value * 1000)
   }
 
+  /** 暂停歌词 */
   function stopLyric (): void {
     currentLyric.value?.stop()
   }
 
+  /** 处理歌词 */
   function handleLyric ({ lineNum, txt }: { lineNum: number; txt: string }): void {
     currentLineNum.value = lineNum
     playingLyric.value = txt
@@ -66,6 +69,11 @@ export function useLyric ({ songReady, currentTime }: Props): UseLyric {
 
   watch(currentSong, async (newSong) => {
     if (!newSong.url || !newSong.id) return
+    stopLyric()
+    currentLyric.value = null
+    currentLineNum.value = 0
+    pureMusicLyric.value = ''
+    playingLyric.value = ''
 
     const lyric = await processLyric(newSong)
     store.commit(types.ADD_SONG_LYRIC, { song: newSong, lyric })
