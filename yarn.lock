@@ -3686,7 +3686,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
 
 create-keyframe-animation@^0.1.0:
   version "0.1.0"
-  resolved "https://registry.npm.taobao.org/create-keyframe-animation/download/create-keyframe-animation-0.1.0.tgz#06b8f3e08ecfb53f807eed91043e5ca1c40d5987"
+  resolved "https://registry.nlark.com/create-keyframe-animation/download/create-keyframe-animation-0.1.0.tgz#06b8f3e08ecfb53f807eed91043e5ca1c40d5987"
   integrity sha1-Brjz4I7PtT+Afu2RBD5cocQNWYc=
   dependencies:
     load-styles "^2.0.0"
