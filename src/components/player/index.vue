@@ -1,5 +1,8 @@
 <template>
-  <div class="player">
+  <div
+    class="player"
+    v-show="playList.length"
+  >
     <div
       class="normal-player"
       v-show="fullScreen"
@@ -103,6 +106,11 @@
         </div>
       </div>
     </div>
+    <!-- 迷你播放器 -->
+    <mini-player
+      :progress="progress"
+      :toggle-play="togglePlay"
+    />
     <audio
       ref="audioRef"
       @pause="pause"
@@ -115,10 +123,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, Ref, toRefs, watch } from 'vue'
+import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
 import { Scroll } from '@/components'
 import ProgressBar from './progress-bar.vue'
+import MiniPlayer from './mini-player.vue'
 import { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
 import * as types from '@/store/mutationTypes'
@@ -133,7 +142,7 @@ interface State {
   /** audio 实例 */
   audioRef: HTMLAudioElement;
   /** 进度条示例 */
-  barRef: HTMLDivElement;
+  barRef: HTMLDivElement | any;
   /** 可以播放 */
   songReady: boolean;
   /** 当前播放时间 */
@@ -144,7 +153,8 @@ export default defineComponent({
   name: 'Player',
   components: {
     ProgressBar,
-    Scroll
+    Scroll,
+    MiniPlayer
   },
   setup () {
     const state = reactive<State>({
@@ -307,9 +317,17 @@ export default defineComponent({
       }
     })
 
+    /** 监听全屏状态设置进度条 */
+    watch(fullScreen, async (newFullScreen) => {
+      if (!newFullScreen) return
+      await nextTick()
+      state.barRef.setOffset(progress.value)
+    })
+
     return {
       ...toRefs(state),
       fullScreen,
+      playList,
       currentSong,
       modeIcon,
 

@@ -102,7 +102,8 @@ export default defineComponent({
       onTouchStart,
       onTouchMove,
       onTouchEnd,
-      onClick
+      onClick,
+      setOffset
     }
   }
 })
