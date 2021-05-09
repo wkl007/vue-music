@@ -14,8 +14,16 @@
         <h1 class="title">{{ currentSong.name }}</h1>
         <h2 class="subtitle">{{ currentSong.singer }}</h2>
       </div>
-      <div class="middle">
-        <div class="middle-l">
+      <div
+        class="middle"
+        @touchstart.prevent="onMiddleTouchStart"
+        @touchmove.prevent="onMiddleTouchMove"
+        @touchend.prevent="onMiddleTouchEnd"
+      >
+        <div
+          class="middle-l"
+          :style="middleLStyle"
+        >
           <div ref="cdWrapperRef" class="cd-wrapper">
             <div ref="cdRef" class="cd">
               <img
@@ -28,13 +36,13 @@
             </div>
           </div>
           <div class="playing-lyric-wrapper">
-            <div class="playing-lyric">{{playingLyric}}</div>
+            <div class="playing-lyric">{{ playingLyric }}</div>
           </div>
         </div>
         <scroll
           class="middle-r"
           ref="lyricScrollRef"
-
+          :style="middleRStyle"
         >
           <div class="lyric-wrapper">
             <div v-if="currentLyric" ref="lyricListRef">
@@ -55,8 +63,14 @@
       </div>
       <div class="bottom">
         <div class="dot-wrapper">
-          <span class="dot"></span>
-          <span class="dot"></span>
+          <span
+            class="dot"
+            :class="currentShow==='cd'?'active':''"
+          />
+          <span
+            class="dot"
+            :class="currentShow==='lyric'?'active':''"
+          />
         </div>
         <div class="progress-wrapper">
           <span class="time time-l">{{ formatTime(currentTime) }}</span>
@@ -112,6 +126,7 @@ import { useMode } from './use-mode'
 import { useFavorite } from './use-favorite'
 import { useCd } from './use-cd'
 import { useLyric } from './use-lyric'
+import { useMiddleInteractive } from './use-middle-interactive'
 import { formatTime } from '@/utils'
 
 interface State {
@@ -160,6 +175,7 @@ export default defineComponent({
     const { cdCls, cdRef, cdImageRef } = useCd()
     const { songReady, currentTime } = toRefs(state)
     const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({ songReady, currentTime })
+    const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
 
     /** 退出全屏 */
     function goBack (): void {
@@ -312,6 +328,10 @@ export default defineComponent({
       lyricScrollRef,
       lyricListRef,
 
+      currentShow,
+      middleLStyle,
+      middleRStyle,
+
       goBack,
       togglePlay,
       pause,
@@ -326,7 +346,10 @@ export default defineComponent({
       toggleFavorite,
       formatTime,
       onProgressChanging,
-      onProgressChanged
+      onProgressChanged,
+      onMiddleTouchStart,
+      onMiddleTouchMove,
+      onMiddleTouchEnd
     }
   }
 })
