@@ -9,7 +9,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/recommend',
     name: 'Recommend',
-    component: () => import(/* webpackChunkName: "recommend" */ '@/views/recommend.vue')
+    component: () => import(/* webpackChunkName: "recommend" */ '@/views/recommend.vue'),
+    children: [
+      {
+        path: '/recommend/:id',
+        component: () => import(/* webpackChunkName: "album" */ '@/views/album.vue')
+      }
+    ]
   },
   {
     path: '/singer',

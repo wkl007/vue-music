@@ -3,7 +3,6 @@ import type { Song } from '@/types/api/recommend'
 import { PlayMode } from '@/utils/constants'
 import * as types from './mutationTypes'
 import { shuffle } from '@/utils'
-import type { Commit } from 'vuex'
 
 /**
  * 顺序播放

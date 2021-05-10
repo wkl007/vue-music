@@ -1,5 +1,5 @@
 <template>
-  <div class="singer-detail">
+  <div class="album">
     <music-list
       :songs="songs"
       :loading="loading"
@@ -10,15 +10,15 @@
 </template>
 
 <script lang="ts">
-import SingerServer from '@/api/singer'
-import { SINGER_KEY } from '@/utils/constants'
+import { ALBUM_KEY } from '@/utils/constants'
 import { createDetailComponent } from '@/utils/create-detail-component'
+import RecommendServer from '@/api/recommend'
 
-export default createDetailComponent('SingerDetail', SINGER_KEY, SingerServer.getSingerDetail)
+export default createDetailComponent('Album', ALBUM_KEY, RecommendServer.getAlbum)
 </script>
 
 <style scoped lang="less">
-.singer-detail {
+.album {
   position: fixed;
   top: 0;
   right: 0;

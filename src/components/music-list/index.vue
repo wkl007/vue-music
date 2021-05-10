@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineComponent, onMounted, PropType, reactive, Ref, ref, toRefs } from 'vue'
+import { computed, ComputedRef, defineComponent, onMounted, PropType, reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import type { Position } from '@better-scroll/slide/dist/types/SlidePages'

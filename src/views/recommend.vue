@@ -5,8 +5,8 @@
         <div class="slider-wrapper">
           <div class="slider-content">
             <slider
-              v-if="state.sliders.length"
-              :sliders="state.sliders"
+              v-if="sliders.length"
+              :sliders="sliders"
             />
           </div>
         </div>
@@ -15,8 +15,9 @@
           <ul>
             <li
               class="item"
-              v-for="item in state.albums"
+              v-for="item in albums"
               :key="item.id"
+              @click="selectAlbum(item)"
             >
               <div class="icon">
                 <img
@@ -35,14 +36,26 @@
         </div>
       </div>
     </scroll>
+    <router-view v-slot="{Component}">
+      <transition appear name="slide">
+        <component :is="Component" :data="selectedAlbum"/>
+      </transition>
+    </router-view>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive } from 'vue'
+import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue'
 import { Scroll, Slider } from '@/components'
-import type { RecommendResp } from '@/types/api/recommend'
+import type { Album, RecommendResp } from '@/types/api/recommend'
+import { ALBUM_KEY } from '@/utils/constants'
+import { saveSessionStorage } from '@/utils/cache'
 import RecommendServer from '@/api/recommend'
+import { useRouter } from 'vue-router'
+
+interface State extends RecommendResp {
+  selectedAlbum: Album | undefined;
+}
 
 export default defineComponent({
   name: 'Recommend',
@@ -51,17 +64,34 @@ export default defineComponent({
     Scroll
   },
   setup () {
-    const state = reactive<RecommendResp>({
+    const router = useRouter()
+    const state = reactive<State>({
       sliders: [],
-      albums: []
+      albums: [],
+      selectedAlbum: undefined
     })
 
     const loading = computed(() => !state.sliders.length && !state.albums.length)
 
+    /** 获取数据 */
     async function fetchData () {
       const { sliders, albums } = await RecommendServer.getRecommend()
       state.sliders = sliders
       state.albums = albums
+    }
+
+    /** 选择专辑 */
+    function selectAlbum (album: Album): void {
+      state.selectedAlbum = album
+      cacheAlbum(album)
+      router.push({
+        path: `/recommend/${album.id}`
+      })
+    }
+
+    /** 缓存专辑 */
+    function cacheAlbum (album: Album): void {
+      saveSessionStorage(ALBUM_KEY, album)
     }
 
     onMounted(() => {
@@ -69,8 +99,10 @@ export default defineComponent({
     })
 
     return {
-      state,
-      loading
+      ...toRefs(state),
+      loading,
+
+      selectAlbum
     }
   }
 })

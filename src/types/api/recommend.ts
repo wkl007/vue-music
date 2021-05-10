@@ -5,6 +5,7 @@ export interface Slider {
 }
 
 export interface Album {
+  mid?: string;
   id: any;
   username: string;
   title: string;
