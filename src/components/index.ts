@@ -6,5 +6,6 @@ import Scroll from './wrap-scroll/index'
 import Confirm from './base/confirm/index.vue'
 import MusicList from './music-list/index.vue'
 import Player from './player/index.vue'
+import SearchInput from './search-input/index.vue'
 
-export { VHeader, VTab, Slider, Scroll, IndexList, MusicList, Player, Confirm }
+export { VHeader, VTab, Slider, Scroll, IndexList, MusicList, Player, Confirm, SearchInput }

@@ -74,6 +74,7 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
+import { promiseTimeout } from '@vueuse/core'
 import { useMode } from './use-mode'
 import { useFavorite } from './use-favorite'
 import Scroll from '@/components/wrap-scroll/index'
@@ -81,7 +82,6 @@ import Confirm from '@/components/base/confirm/index.vue'
 import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
 import type { Song } from '@/types/api/recommend'
 import * as types from '@/store/mutationTypes'
-import { sleep } from '@/utils'
 
 interface State {
   scrollRef: BScrollConstructor | undefined;
@@ -164,7 +164,7 @@ export default defineComponent({
       state.removing = true
       await store.dispatch('removeSong', song)
       if (!playList.value.length) hide()
-      await sleep(300)
+      await promiseTimeout(300)
       state.removing = false
     }
 
