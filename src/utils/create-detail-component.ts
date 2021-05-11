@@ -52,7 +52,7 @@ export function createDetailComponent (name: string, key: string, fetch: (params
       async function fetchData () {
         try {
           state.loading = true
-          const res = await fetch(name === 'Album' ? { id: computedData.value?.id } : { mid: computedData.value?.mid })
+          const res = await fetch((name === 'Album' || name === 'TopDetail') ? { id: computedData.value?.id } : { mid: computedData.value?.mid })
           state.songs = await processSongs(res.songs)
           state.loading = false
         } catch (e) {}

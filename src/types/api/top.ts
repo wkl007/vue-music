@@ -1,17 +1,17 @@
-export interface SongList {
+export interface Song {
   id: number;
   singerName: string;
   songName: string;
 }
 
-export interface TopList {
+export interface Top {
   id: number;
   pic: string;
   name: string;
   period: string;
-  songList: SongList[];
+  songList: Song[];
 }
 
 export interface TopListResp {
-  topList: TopList[];
+  topList: Top[];
 }

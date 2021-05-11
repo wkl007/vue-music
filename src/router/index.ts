@@ -13,6 +13,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '/recommend/:id',
+        name: 'Album',
         component: () => import(/* webpackChunkName: "album" */ '@/views/album.vue')
       }
     ]
@@ -32,7 +33,14 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/top-list',
     name: 'TopList',
-    component: () => import(/* webpackChunkName: "topList" */ '@/views/top-list.vue')
+    component: () => import(/* webpackChunkName: "topList" */ '@/views/top-list.vue'),
+    children: [
+      {
+        path: '/top-list/:id',
+        name: 'TopDetail',
+        component: () => import(/* webpackChunkName: "topDetail" */ '@/views/top-detail.vue')
+      }
+    ]
   },
   {
     path: '/search',
