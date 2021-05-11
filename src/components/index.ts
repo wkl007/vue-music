@@ -7,5 +7,6 @@ import Confirm from './base/confirm/index.vue'
 import MusicList from './music-list/index.vue'
 import Player from './player/index.vue'
 import SearchInput from './search-input/index.vue'
+import Suggest from './suggest/index.vue'
 
-export { VHeader, VTab, Slider, Scroll, IndexList, MusicList, Player, Confirm, SearchInput }
+export { VHeader, VTab, Slider, Scroll, IndexList, MusicList, Player, Confirm, SearchInput, Suggest }

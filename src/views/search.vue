@@ -24,12 +24,17 @@
         </div>
       </div>
     </scroll>
+    <div class="search-result" v-show="query">
+      <suggest
+        :query="query"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue'
-import { SearchInput, Scroll } from '@/components'
+import { SearchInput, Scroll, Suggest } from '@/components'
 import SearchServer from '@/api/search'
 import type { HotKey } from '@/types/api/search'
 import { Singer } from '@/types/api/singer'
@@ -49,7 +54,8 @@ export default defineComponent({
   name: 'Search',
   components: {
     SearchInput,
-    Scroll
+    Scroll,
+    Suggest
   },
   setup () {
     const router = useRouter()

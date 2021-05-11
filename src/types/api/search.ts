@@ -1,4 +1,5 @@
 import { AlbumResp } from '@/types/api/recommend'
+import { Singer } from '@/types/api/singer'
 
 export interface HotKey {
   key: string;
@@ -16,5 +17,6 @@ export interface SearchReq {
 }
 
 export interface SearchResp extends AlbumResp {
+  singer?: Singer;
   hasMore: boolean;
 }
