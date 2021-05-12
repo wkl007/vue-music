@@ -9,6 +9,7 @@
       <li
         class="suggest-item"
         v-if="singer"
+        @click="selectSinger(singer)"
       >
         <div class="icon">
           <i class="icon-mine"></i>
@@ -21,6 +22,7 @@
         class="suggest-item"
         v-for="item in songs"
         :key="item.id"
+        @click="selectSong(item)"
       >
         <div class="icon">
           <i class="icon-music"></i>
@@ -31,16 +33,21 @@
           </p>
         </div>
       </li>
-      <li class="suggest-item"></li>
+      <li
+        class="suggest-item"
+        v-loading:[loadingText]="pullUpLoading"
+      ></li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from 'vue'
+import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
 import { Singer } from '@/types/api/singer'
 import { Song } from '@/types/api/recommend'
+import { processSongs } from '@/api/song'
 import SearchServer from '@/api/search'
+import { usePullUpLoad } from './use-pull-up-load'
 
 interface State {
   singer: Singer | undefined;
@@ -78,14 +85,81 @@ export default defineComponent({
 
     const loading = computed(() => !state.singer && !state.songs.length)
     const noResult = computed(() => !state.singer && !state.songs.length && !state.hasMore)
-    // const pullUpLoading=computed(()=>)
+    const pullUpLoading = computed(() => isPullUpLoad.value && state.hasMore)
     const preventPullUpLoad = computed(() => loading.value || state.manualLoading)
+
+    // hooks
+    const { isPullUpLoad, rootRef, scroll } = usePullUpLoad({ fetchData: searchMore, preventPullUpLoad })
+
+    async function searchFirst (): Promise<void> {
+      if (!props.query) return
+      state.page = 1
+      state.songs = []
+      state.singer = undefined
+      state.hasMore = true
+
+      const { songs, singer, hasMore } = await SearchServer.search({
+        query: props.query,
+        page: state.page,
+        showSinger: props.showSinger
+      })
+      state.songs = await processSongs(songs)
+      state.singer = singer
+      state.hasMore = hasMore
+      await nextTick()
+      makeItScrollable()
+    }
+
+    async function searchMore (): Promise<void> {
+      if (!state.hasMore || !props.query) return
+      state.page++
+      const { songs, singer, hasMore } = await SearchServer.search({
+        query: props.query,
+        page: state.page,
+        showSinger: props.showSinger
+      })
+      state.songs = state.songs.concat(await processSongs(songs))
+      state.hasMore = hasMore
+      await nextTick()
+      makeItScrollable()
+    }
+
+    async function makeItScrollable (): void {
+      if (scroll.value?.maxScrollY >= -1) {
+        state.manualLoading = true
+        await searchMore()
+        state.manualLoading = false
+      }
+    }
+
+    function selectSinger (singer: Singer): void {
+      emit('select-singer', singer)
+    }
+
+    function selectSong (song: Song): void {
+      emit('select-song', song)
+    }
+
+    watch(
+      () => props.query,
+      async (newQuery) => {
+        if (!newQuery) return
+        await searchFirst()
+      }
+    )
 
     return {
       ...toRefs(state),
       loading,
       noResult,
-      preventPullUpLoad
+      pullUpLoading,
+      preventPullUpLoad,
+      isPullUpLoad,
+      rootRef,
+      scroll,
+
+      selectSinger,
+      selectSong
     }
   }
 })

@@ -24,16 +24,26 @@
         </div>
       </div>
     </scroll>
-    <div class="search-result" v-show="query">
+    <div
+      class="search-result"
+      v-show="query"
+    >
       <suggest
         :query="query"
+        @select-singer="selectSinger"
+        @select-song="selectSong"
       />
     </div>
+    <router-view v-slot="{Component}">
+      <transition appear name="slide">
+        <component :is="Component" :data="selectedSinger"/>
+      </transition>
+    </router-view>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue'
+import { computed, defineComponent, onMounted, reactive, toRefs, watch } from 'vue'
 import { SearchInput, Scroll, Suggest } from '@/components'
 import SearchServer from '@/api/search'
 import type { HotKey } from '@/types/api/search'
@@ -41,6 +51,9 @@ import { Singer } from '@/types/api/singer'
 import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { Song } from '@/types/api/recommend'
+import { SINGER_KEY } from '@/utils/constants'
+import { saveSessionStorage } from '@/utils/cache'
 
 interface State {
   query: string;
@@ -82,15 +95,41 @@ export default defineComponent({
       state.query = query
     }
 
+    function selectSinger (singer: Singer): void {
+      state.selectedSinger = singer
+      cacheSinger(singer)
+      router.push({
+        path: `/search/${singer.mid}`
+      })
+    }
+
+    function selectSong (song: Song): void {
+      store.dispatch('addSong', song)
+    }
+
+    /** 缓存歌手 */
+    function cacheSinger (singer: Singer): void {
+      saveSessionStorage(SINGER_KEY, singer)
+    }
+
     onMounted(() => {
       fetchHotKeys()
     })
+
+    watch(
+      () => state.query,
+      (val) => {
+        console.log(val)
+      }
+    )
 
     return {
       ...toRefs(state),
       searchHistory,
 
-      addQuery
+      addQuery,
+      selectSinger,
+      selectSong
     }
   }
 })
