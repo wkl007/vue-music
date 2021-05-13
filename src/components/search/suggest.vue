@@ -107,13 +107,13 @@ export default defineComponent({
       state.singer = singer
       state.hasMore = hasMore
       await nextTick()
-      makeItScrollable()
+      await makeItScrollable()
     }
 
     async function searchMore (): Promise<void> {
       if (!state.hasMore || !props.query) return
       state.page++
-      const { songs, singer, hasMore } = await SearchServer.search({
+      const { songs, hasMore } = await SearchServer.search({
         query: props.query,
         page: state.page,
         showSinger: props.showSinger
@@ -121,11 +121,11 @@ export default defineComponent({
       state.songs = state.songs.concat(await processSongs(songs))
       state.hasMore = hasMore
       await nextTick()
-      makeItScrollable()
+      await makeItScrollable()
     }
 
-    async function makeItScrollable (): void {
-      if (scroll.value?.maxScrollY >= -1) {
+    async function makeItScrollable (): Promise<void> {
+      if (scroll.value && scroll.value.maxScrollY >= -1) {
         state.manualLoading = true
         await searchMore()
         state.manualLoading = false

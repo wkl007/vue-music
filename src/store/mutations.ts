@@ -30,6 +30,12 @@ const mutations = {
       if (item.mid === song.mid) item.lyric = lyric
       return item
     })
+  },
+  [types.SET_SEARCH_HISTORY] (state: State, searchHistory: string[]): void {
+    state.searchHistory = searchHistory
+  },
+  [types.SET_PLAY_HISTORY] (state: State, playHistory: Song[]): void {
+    state.playHistory = playHistory
   }
 }
 

@@ -22,6 +22,28 @@
             </li>
           </ul>
         </div>
+        <div
+          class="search-history"
+          v-show="searchHistory.length"
+        >
+          <h1 class="title">
+            <span class="text">搜索历史</span>
+            <span class="clear" @click="showConfirm">
+              <i class="icon-clear"></i>
+            </span>
+          </h1>
+          <search-list
+            :searches="searchHistory"
+            @select="addQuery"
+            @delete="deleteSearch"
+          />
+          <confirm
+            ref="confirmRef"
+            text="是否清空所有搜索历史"
+            confirm-btn-text="清空"
+            @confirm="clearSearch"
+          />
+        </div>
       </div>
     </scroll>
     <div
@@ -43,8 +65,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, toRefs, watch } from 'vue'
-import { SearchInput, Scroll, Suggest } from '@/components'
+import { computed, defineComponent, nextTick, onMounted, reactive, toRefs, watch } from 'vue'
+import { SearchInput, Scroll, Suggest, SearchList, Confirm } from '@/components'
+import { useSearchHistory } from '@/components/search/use-search-history'
 import SearchServer from '@/api/search'
 import type { HotKey } from '@/types/api/search'
 import { Singer } from '@/types/api/singer'
@@ -68,7 +91,9 @@ export default defineComponent({
   components: {
     SearchInput,
     Scroll,
-    Suggest
+    Suggest,
+    SearchList,
+    Confirm
   },
   setup () {
     const router = useRouter()
@@ -84,6 +109,9 @@ export default defineComponent({
 
     const searchHistory = computed(() => store.state.searchHistory)
 
+    // hooks
+    const { saveSearch, deleteSearch, clearSearch } = useSearchHistory()
+
     async function fetchHotKeys () {
       try {
         const { hotKeys } = await SearchServer.getHotKeys()
@@ -96,14 +124,17 @@ export default defineComponent({
     }
 
     function selectSinger (singer: Singer): void {
+      saveSearch(state.query)
       state.selectedSinger = singer
       cacheSinger(singer)
+
       router.push({
         path: `/search/${singer.mid}`
       })
     }
 
     function selectSong (song: Song): void {
+      saveSearch(state.query)
       store.dispatch('addSong', song)
     }
 
@@ -112,14 +143,27 @@ export default defineComponent({
       saveSessionStorage(SINGER_KEY, singer)
     }
 
+    /** 显示删除弹框 */
+    function showConfirm (): void {
+      state.confirmRef.show()
+    }
+
+    /** 强制刷新 */
+    function refreshScroll (): void {
+      state.scrollRef?.scroll.refresh()
+    }
+
     onMounted(() => {
       fetchHotKeys()
     })
 
     watch(
       () => state.query,
-      (val) => {
-        console.log(val)
+      async (newQuery) => {
+        console.log(newQuery)
+        if (newQuery) return
+        await nextTick()
+        refreshScroll()
       }
     )
 
@@ -129,7 +173,10 @@ export default defineComponent({
 
       addQuery,
       selectSinger,
-      selectSong
+      selectSong,
+      showConfirm,
+      deleteSearch,
+      clearSearch
     }
   }
 })

@@ -1,6 +1,6 @@
 import type { State } from '@/types/store'
 import type { Song } from '@/types/api/recommend'
-import { FAVORITE_KEY, PlayMode } from '@/utils/constants'
+import { FAVORITE_KEY, PlayMode, SEARCH_KEY } from '@/utils/constants'
 import { loadStorage } from '@/utils/cache'
 
 const state: State = {
@@ -10,7 +10,9 @@ const state: State = {
   playMode: PlayMode.SEQUENCE,
   currentIndex: 0,
   fullScreen: false,
-  favoriteList: loadStorage(FAVORITE_KEY, []) as Song[]
+  favoriteList: loadStorage(FAVORITE_KEY, []) as Song[],
+  searchHistory: loadStorage(SEARCH_KEY, []) as string[],
+  playHistory: []
 }
 
 export default state

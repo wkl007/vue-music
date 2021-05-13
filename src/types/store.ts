@@ -17,6 +17,10 @@ export interface State {
   fullScreen: boolean;
   /** 收藏列表 */
   favoriteList: Song[];
+  /** 搜索历史列表 */
+  searchHistory: string[];
+  /** 播放历史列表 */
+  playHistory: Song[];
 }
 
 export interface Getters {
