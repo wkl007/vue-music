@@ -145,6 +145,7 @@ import { useCd } from './use-cd'
 import { useLyric } from './use-lyric'
 import { useMiddleInteractive } from './use-middle-interactive'
 import { useAnimation } from './use-animation'
+import { usePlayHistory } from './use-play-history'
 import { formatTime } from '@/utils'
 
 interface State {
@@ -196,6 +197,7 @@ export default defineComponent({
     const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({ songReady, currentTime })
     const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
     const { cdWrapperRef, enter, afterEnter, leave, afterLeave } = useAnimation()
+    const { savePlay } = usePlayHistory()
 
     /** 退出全屏 */
     function goBack (): void {
@@ -256,6 +258,7 @@ export default defineComponent({
       if (state.songReady) return
       state.songReady = true
       playLyric()
+      savePlay(currentSong.value)
     }
 
     /** 加载错误 */

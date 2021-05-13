@@ -51,7 +51,7 @@
             </transition-group>
           </scroll>
           <div class="list-add">
-            <div class="add">
+            <div class="add" @click="showAddSong">
               <i class="icon-add"></i>
               <span class="text">添加歌曲到队列</span>
             </div>
@@ -66,6 +66,7 @@
           confirm-btn-text="清空"
           @confirm="confirmClear"
         />
+        <add-song ref="addSongRef"/>
       </div>
     </transition>
   </teleport>
@@ -79,6 +80,7 @@ import { useMode } from './use-mode'
 import { useFavorite } from './use-favorite'
 import Scroll from '@/components/wrap-scroll/index'
 import Confirm from '@/components/base/confirm/index.vue'
+import AddSong from '@/components/add-song/index.vue'
 import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
 import type { Song } from '@/types/api/recommend'
 import * as types from '@/store/mutationTypes'
@@ -87,7 +89,7 @@ interface State {
   scrollRef: BScrollConstructor | undefined;
   listRef: any;
   confirmRef: any;
-  addSongRef: HTMLDivElement;
+  addSongRef: any;
   visible: boolean;
   removing: boolean;
 }
@@ -96,7 +98,8 @@ export default defineComponent({
   name: 'PlayList',
   components: {
     Scroll,
-    Confirm
+    Confirm,
+    AddSong
   },
   setup () {
     const store = useStore()
@@ -179,6 +182,11 @@ export default defineComponent({
       hide()
     }
 
+    /** 添加歌曲 */
+    function showAddSong () {
+      state.addSongRef.show()
+    }
+
     /** 监听当前歌曲 */
     watch(currentSong, async (newSong) => {
       if (!state.visible || !newSong.id) return
@@ -204,7 +212,8 @@ export default defineComponent({
       selectItem,
       removeSong,
       showConfirm,
-      confirmClear
+      confirmClear,
+      showAddSong
     }
   }
 })

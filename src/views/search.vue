@@ -160,7 +160,6 @@ export default defineComponent({
     watch(
       () => state.query,
       async (newQuery) => {
-        console.log(newQuery)
         if (newQuery) return
         await nextTick()
         refreshScroll()
