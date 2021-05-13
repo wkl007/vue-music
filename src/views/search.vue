@@ -120,7 +120,7 @@ export default defineComponent({
     }
 
     function addQuery (query: string): void {
-      state.query = query
+      state.query = query.trim()
     }
 
     function selectSinger (singer: Singer): void {
