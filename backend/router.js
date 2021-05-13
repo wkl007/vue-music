@@ -596,7 +596,7 @@ function registerHotKeys (app) {
           result: {
             hotKeys: data.data.hotkey.map((key) => {
               return {
-                key: key.k,
+                key: (key.k).trim(),
                 id: key.n
               }
             }).slice(0, 10)
