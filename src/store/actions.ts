@@ -24,7 +24,7 @@ export function selectPlay ({ commit }: CommitFunction, { list, index }: { list:
  * @param commit
  * @param list
  */
-export function randomPlay ({ commit }: CommitFunction, { list }: { list: Song[] }): void {
+export function randomPlay ({ commit }: CommitFunction, list: Song[]): void {
   commit(types.SET_PLAY_MODE, PlayMode.RANDOM)
   commit(types.SET_SEQUENCE_LIST, list)
   commit(types.SET_PLAYING, true)

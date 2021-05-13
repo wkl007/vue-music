@@ -1,6 +1,6 @@
 import type { State } from '@/types/store'
 import type { Song } from '@/types/api/recommend'
-import { FAVORITE_KEY, PlayMode, SEARCH_KEY } from '@/utils/constants'
+import { FAVORITE_KEY, PLAY_KEY, PlayMode, SEARCH_KEY } from '@/utils/constants'
 import { loadStorage } from '@/utils/cache'
 
 const state: State = {
@@ -12,7 +12,7 @@ const state: State = {
   fullScreen: false,
   favoriteList: loadStorage(FAVORITE_KEY, []) as Song[],
   searchHistory: loadStorage(SEARCH_KEY, []) as string[],
-  playHistory: []
+  playHistory: loadStorage(PLAY_KEY, []) as Song[]
 }
 
 export default state

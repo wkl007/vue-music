@@ -1,7 +1,25 @@
 <template>
   <v-header/>
   <v-tab/>
-  <router-view :style="viewStyle"/>
+  <router-view
+    :style="viewStyle"
+    v-slot="{Component}"
+  >
+    <keep-alive>
+      <component :is="Component"/>
+    </keep-alive>
+  </router-view>
+  <router-view
+    :style="viewStyle"
+    name="user"
+    v-slot="{Component}"
+  >
+    <transition appear name="slide">
+      <keep-alive>
+        <component :is="Component"/>
+      </keep-alive>
+    </transition>
+  </router-view>
   <player/>
 </template>
 

@@ -9,5 +9,21 @@ import MusicList from './music-list/index.vue'
 import Player from './player/index.vue'
 import SearchInput from './search/search-input.vue'
 import Suggest from './search/suggest.vue'
+import Switches from './base/switches/index.vue'
+import SongList from './base/song-list/index.vue'
 
-export { VHeader, VTab, Slider, Scroll, IndexList, MusicList, Player, Confirm, SearchInput, Suggest, SearchList }
+export {
+  VHeader,
+  VTab,
+  Slider,
+  Scroll,
+  IndexList,
+  MusicList,
+  Player,
+  Confirm,
+  SearchInput,
+  Suggest,
+  SearchList,
+  Switches,
+  SongList
+}
