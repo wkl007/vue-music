@@ -9,7 +9,7 @@
     "lint": "npm run lint:code && npm run lint:style",
     "lint:code": "vue-cli-service lint",
     "lint:style": "vue-cli-service lint:style",
-    "deploy": "num run build && pm2 start backend/prod.server.js -i max",
+    "deploy": "npm run build && pm2 start backend/prod.server.js -i max",
     "postinstall": "husky install"
   },
   "lint-staged": {
