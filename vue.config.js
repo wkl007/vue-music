@@ -109,6 +109,10 @@ module.exports = {
   // 使用ts-import-plugin parallel设置为false，原因参考https://www.jianshu.com/p/201ed7363a56
   parallel: false,
   pwa: {
+    name: 'Chicken Music',
+    description: 'Chicken Music By Vue 3.0',
+    themeColor: '#222',
+    msTileColor: '#222',
     workboxOptions: {
       skipWaiting: true,
       clientsClaim: true
