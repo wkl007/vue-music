@@ -66,23 +66,28 @@
 
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, reactive, toRefs, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { SearchInput, Scroll, Suggest, SearchList, Confirm } from '@/components'
 import { useSearchHistory } from '@/components/search/use-search-history'
 import SearchServer from '@/api/search'
-import type { HotKey } from '@/types/api/search'
-import { Singer } from '@/types/api/singer'
-import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import { Song } from '@/types/api/recommend'
 import { SINGER_KEY } from '@/utils/constants'
 import { saveSessionStorage } from '@/utils/cache'
+import type { HotKey } from '@/types/api/search'
+import type { Singer } from '@/types/api/singer'
+import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
+import type { Song } from '@/types/api/recommend'
 
 interface State {
+  /** 搜索参数 */
   query: string;
+  /** 热门搜索 */
   hotKeys: HotKey[];
+  /** 选中的歌手 */
   selectedSinger: Singer | undefined;
+  /** scroll 实例 */
   scrollRef: BScrollConstructor | undefined;
+  /** confirm 实例 */
   confirmRef: any;
 }
 
@@ -112,6 +117,7 @@ export default defineComponent({
     // hooks
     const { saveSearch, deleteSearch, clearSearch } = useSearchHistory()
 
+    /** 获取热门搜索 */
     async function fetchHotKeys () {
       try {
         const { hotKeys } = await SearchServer.getHotKeys()
@@ -119,10 +125,12 @@ export default defineComponent({
       } catch (e) {}
     }
 
+    /** 添加搜索参数 */
     function addQuery (query: string): void {
       state.query = query.trim()
     }
 
+    /** 选中歌手 */
     function selectSinger (singer: Singer): void {
       saveSearch(state.query)
       state.selectedSinger = singer
@@ -133,6 +141,7 @@ export default defineComponent({
       })
     }
 
+    /** 选中歌曲 */
     function selectSong (song: Song): void {
       saveSearch(state.query)
       store.dispatch('addSong', song)

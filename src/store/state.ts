@@ -1,7 +1,7 @@
-import type { State } from '@/types/store'
-import type { Song } from '@/types/api/recommend'
 import { FAVORITE_KEY, PLAY_KEY, PlayMode, SEARCH_KEY } from '@/utils/constants'
 import { loadStorage } from '@/utils/cache'
+import type { State } from '@/types/store'
+import type { Song } from '@/types/api/recommend'
 
 const state: State = {
   sequenceList: [],

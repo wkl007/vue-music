@@ -1,9 +1,9 @@
-import { useStore } from 'vuex'
 import { computed, ref, Ref, watch } from 'vue'
+import { useStore } from 'vuex'
 import Lyric from 'lyric-parser'
 import { processLyric } from '@/api/song'
 import * as types from '@/store/mutationTypes'
-import { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
+import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
 
 interface Props {
   /** 可以播放 */

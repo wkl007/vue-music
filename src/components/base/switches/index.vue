@@ -37,6 +37,7 @@ export default defineComponent({
       }
     })
 
+    /** 选中某项 */
     function switchItem (index: number): void {
       emit('update:modelValue', index)
     }

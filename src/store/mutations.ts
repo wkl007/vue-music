@@ -1,7 +1,7 @@
-import type { State } from '@/types/store'
 import { PlayMode } from '@/utils/constants'
 import * as types from './mutationTypes'
-import { Song } from '@/types/api/recommend'
+import type { Song } from '@/types/api/recommend'
+import type { State } from '@/types/store'
 
 const mutations = {
   [types.SET_PLAYING] (state: State, playing: boolean): void {

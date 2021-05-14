@@ -76,21 +76,27 @@
 import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
 import { promiseTimeout } from '@vueuse/core'
-import { useMode } from './use-mode'
-import { useFavorite } from './use-favorite'
 import Scroll from '@/components/wrap-scroll/index'
 import Confirm from '@/components/base/confirm/index.vue'
 import AddSong from '@/components/add-song/index.vue'
+import { useMode } from './use-mode'
+import { useFavorite } from './use-favorite'
+import * as types from '@/store/mutationTypes'
 import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
 import type { Song } from '@/types/api/recommend'
-import * as types from '@/store/mutationTypes'
 
 interface State {
+  /** scroll 实例 */
   scrollRef: BScrollConstructor | undefined;
+  /** 列表实例 */
   listRef: any;
+  /** confirm 实例 */
   confirmRef: any;
+  /** addSong 实例 */
   addSongRef: any;
+  /** 显示播放列表 */
   visible: boolean;
+  /** 正在删除标识 */
   removing: boolean;
 }
 

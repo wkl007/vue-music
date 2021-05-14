@@ -15,6 +15,7 @@ export default defineComponent({
   setup () {
     const title = ref('抱歉，没有结果')
 
+    /** 设置标题 */
     function setTitle (str: string) {
       title.value = str
     }

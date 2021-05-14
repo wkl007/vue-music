@@ -1,5 +1,5 @@
-import { useStore } from 'vuex'
 import { computed, ComputedRef } from 'vue'
+import { useStore } from 'vuex'
 import { PlayMode } from '@/utils/constants'
 
 interface UseMode {

@@ -25,7 +25,9 @@ import { saveSessionStorage } from '@/utils/cache'
 import type { Singer, Singers } from '@/types/api/singer'
 
 interface State {
+  /** 歌手列表 */
   singers: Singers[];
+  /** 选中的歌手 */
   selectedSinger: Singer | undefined;
 }
 

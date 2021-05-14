@@ -1,6 +1,6 @@
-import type { App } from 'vue'
 import lazyPlugin from 'vue3-lazy'
 import images from '@/assets/images'
+import type { App } from 'vue'
 
 /**
  * vue3-lazy 配置

@@ -76,7 +76,21 @@ import SearchList from '../base/search-list/index.vue'
 import Message from '../base/message/index.vue'
 import Switches from '../base/switches/index.vue'
 import { useSearchHistory } from '../search/use-search-history'
-import { Song } from '@/types/api/recommend'
+import type { Song } from '@/types/api/recommend'
+import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
+
+interface State {
+  /** 显示隐藏 */
+  visible: boolean;
+  /** 搜索参数 */
+  query: string;
+  /** 当前索引 */
+  currentIndex: number;
+  /** scroll 实例 */
+  scrollRef: BScrollConstructor | undefined;
+  /** message 实例 */
+  messageRef: any;
+}
 
 export default defineComponent({
   name: 'AddSong',
@@ -91,11 +105,11 @@ export default defineComponent({
   },
   setup () {
     const store = useStore()
-    const state = reactive({
+    const state = reactive<State>({
       visible: false,
       query: '',
       currentIndex: 0,
-      scrollRef: document.createElement('div'),
+      scrollRef: undefined,
       messageRef: document.createElement('div')
     })
 
@@ -105,38 +119,46 @@ export default defineComponent({
     // hooks
     const { saveSearch } = useSearchHistory()
 
+    /** 显示 */
     async function show () {
       state.visible = true
       await nextTick()
       refreshScroll()
     }
 
+    /** 隐藏 */
     function hide () {
       state.visible = false
     }
 
+    /** 强制刷新 */
     function refreshScroll () {
-      state.scrollRef.scroll.refresh()
+      state.scrollRef?.scroll.refresh()
     }
 
+    /** 添加搜索参数 */
     function addQuery (query: string): void {
       state.query = query.trim()
     }
 
+    /** 歌曲列表点击 */
     function selectSongBySongList ({ song }: { song: Song }) {
       addSong(song)
     }
 
+    /** 建议列表点击 */
     function selectSongBySuggest (song: Song) {
       addSong(song)
       saveSearch(state.query)
     }
 
+    /** 添加歌曲 */
     function addSong (song: Song): void {
       store.dispatch('addSong', song)
       showMessage()
     }
 
+    /** 显示 message */
     function showMessage (): void {
       state.messageRef.show()
     }

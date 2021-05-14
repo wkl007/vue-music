@@ -53,10 +53,10 @@
 import { computed, ComputedRef, defineComponent, onMounted, PropType, reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import type { Position } from '@better-scroll/slide/dist/types/SlidePages'
-import type { Song } from '@/types/api/recommend'
 import Scroll from '../wrap-scroll/index'
 import SongList from '../base/song-list/index.vue'
+import type { Position } from '@better-scroll/slide/dist/types/SlidePages'
+import type { Song } from '@/types/api/recommend'
 
 const RESERVED_HEIGHT = 40 // 顶部高度
 
@@ -183,18 +183,22 @@ export default defineComponent({
       }
     })
 
+    /** 返回 */
     function goBack () {
       router.back()
     }
 
+    /** 随机播放 */
     function random () {
       store.dispatch('randomPlay', { list: props.songs })
     }
 
+    /** 监听滚动 */
     function onScroll (pos: Position): void {
       state.scrollY = -pos.y
     }
 
+    /** 歌曲选择 */
     function selectItem ({ song, index }: { song: Song; index: number }) {
       store.dispatch('selectPlay', { list: props.songs, index })
     }

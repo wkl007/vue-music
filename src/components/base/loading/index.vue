@@ -24,6 +24,7 @@ export default defineComponent({
       images: inject('images', images)
     })
 
+    /** 设置标题 */
     function setTitle (title: string) {
       state.title = title
     }

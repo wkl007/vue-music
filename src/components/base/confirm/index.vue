@@ -32,14 +32,17 @@ import { defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'Confirm',
   props: {
+    /** 文本 */
     text: {
       type: String,
       default: ''
     },
+    /** 确认文案 */
     confirmBtnText: {
       type: String,
       default: '确定'
     },
+    /** 取消文案 */
     cancelBtnText: {
       type: String,
       default: '取消'
@@ -49,19 +52,23 @@ export default defineComponent({
   setup (props, { emit }) {
     const visible = ref(false)
 
+    /** 显示 */
     function show (): void {
       visible.value = true
     }
 
+    /** 隐藏 */
     function hide (): void {
       visible.value = false
     }
 
+    /** 确认 */
     function confirm (): void {
       hide()
       emit('confirm')
     }
 
+    /** 取消 */
     function cancel (): void {
       hide()
       emit('cancel')

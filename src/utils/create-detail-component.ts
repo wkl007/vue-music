@@ -7,7 +7,9 @@ import { processSongs } from '@/api/song'
 import { loadSessionStorage } from '@/utils/cache'
 
 interface State {
+  /** 歌曲列表 */
   songs: Song[];
+  /** 加载状态 */
   loading: boolean;
 }
 
@@ -18,6 +20,7 @@ export function createDetailComponent (name: string, key: string, fetch: (params
       MusicList
     },
     props: {
+      /** 歌手信息 */
       data: {
         type: Object as PropType<Singer>,
         default: () => {}
@@ -49,6 +52,7 @@ export function createDetailComponent (name: string, key: string, fetch: (params
 
       const title = computed(() => (computedData.value?.name || computedData.value?.title))
 
+      /** 获取数据 */
       async function fetchData () {
         try {
           state.loading = true
@@ -58,13 +62,13 @@ export function createDetailComponent (name: string, key: string, fetch: (params
         } catch (e) {}
       }
 
-      onMounted(() => {
+      onMounted(async () => {
         if (!computedData.value) {
           const path = route.matched[0].path
-          router.push({ path })
+          await router.push({ path })
           return
         }
-        fetchData()
+        await fetchData()
       })
 
       return {

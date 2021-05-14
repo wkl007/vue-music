@@ -3,11 +3,12 @@ import type { Singers } from '@/types/api/singer'
 import type { Position } from '@better-scroll/slide/dist/types/SlidePages'
 
 interface Props {
+  /** 歌手列表 */
   data: Singers[];
 }
 
 interface UseFixed {
-  /** 父级容器 */
+  /** 父级容器实例 */
   groupRef: Ref<HTMLDivElement>;
   /** 固定标题 */
   fixedTitle: ComputedRef<string>;
@@ -41,6 +42,26 @@ export function useFixed (props: Props): UseFixed {
     }
   })
 
+  /** 计算每个组的高度 */
+  function calculate (): void {
+    const list = groupRef.value.children
+    const listHeightsVal = listHeights.value
+    let height = 0
+
+    listHeightsVal.length = 0
+    listHeightsVal.push(height)
+
+    for (let i = 0; i < list.length; i++) {
+      height += list[i].clientHeight
+      listHeightsVal.push(height)
+    }
+  }
+
+  /** 滚动监听 */
+  function onScroll (pos: Position): void {
+    scrollY.value = -pos.y
+  }
+
   watch(() => props.data, async () => {
     // DOM 更新后获取高度
     await nextTick()
@@ -61,26 +82,6 @@ export function useFixed (props: Props): UseFixed {
       }
     }
   })
-
-  /** 计算每个组的高度 */
-  function calculate (): void {
-    const list = groupRef.value.children
-    const listHeightsVal = listHeights.value
-    let height = 0
-
-    listHeightsVal.length = 0
-    listHeightsVal.push(height)
-
-    for (let i = 0; i < list.length; i++) {
-      height += list[i].clientHeight
-      listHeightsVal.push(height)
-    }
-  }
-
-  /** 滚动监听 */
-  function onScroll (pos: Position): void {
-    scrollY.value = -pos.y
-  }
 
   return {
     groupRef,

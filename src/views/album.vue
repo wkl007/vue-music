@@ -10,9 +10,9 @@
 </template>
 
 <script lang="ts">
+import RecommendServer from '@/api/recommend'
 import { ALBUM_KEY } from '@/utils/constants'
 import { createDetailComponent } from '@/utils/create-detail-component'
-import RecommendServer from '@/api/recommend'
 
 export default createDetailComponent('Album', ALBUM_KEY, RecommendServer.getAlbum)
 </script>

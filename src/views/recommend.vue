@@ -54,6 +54,7 @@ import RecommendServer from '@/api/recommend'
 import { useRouter } from 'vue-router'
 
 interface State extends RecommendResp {
+  /** 选中的专辑 */
   selectedAlbum: Album | undefined;
 }
 

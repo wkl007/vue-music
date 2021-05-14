@@ -18,6 +18,7 @@ import { defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'Message',
   props: {
+    /** 显示时间 */
     delay: {
       type: Number,
       default: 2000
@@ -27,6 +28,7 @@ export default defineComponent({
     const visible = ref(false)
     let timer = 0
 
+    /** 显示 */
     function show () {
       visible.value = true
       clearTimeout(timer)
@@ -35,6 +37,7 @@ export default defineComponent({
       }, props.delay)
     }
 
+    /** 隐藏 */
     function hide () {
       clearTimeout(timer)
       visible.value = false

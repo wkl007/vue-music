@@ -43,29 +43,38 @@
 
 <script lang="ts">
 import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
-import { Singer } from '@/types/api/singer'
-import { Song } from '@/types/api/recommend'
 import { processSongs } from '@/api/song'
 import SearchServer from '@/api/search'
 import { usePullUpLoad } from './use-pull-up-load'
+import type { Singer } from '@/types/api/singer'
+import type { Song } from '@/types/api/recommend'
 
 interface State {
+  /** 歌手 */
   singer: Singer | undefined;
+  /** 歌曲列表 */
   songs: Song[];
+  /** 是否有下一页 */
   hasMore: boolean;
+  /** 分页 */
   page: number;
+  /** 加载文案 */
   loadingText: string;
+  /** 空数据文案 */
   noResultText: string;
+  /** 手动加载 */
   manualLoading: boolean;
 }
 
 export default defineComponent({
   name: 'Suggest',
   props: {
+    /** 搜素参数 */
     query: {
       type: String,
       default: ''
     },
+    /** 显示歌手 */
     showSinger: {
       type: Boolean,
       default: true
@@ -91,6 +100,7 @@ export default defineComponent({
     // hooks
     const { isPullUpLoad, rootRef, scroll } = usePullUpLoad({ fetchData: searchMore, preventPullUpLoad })
 
+    /** 首次请求 */
     async function searchFirst (): Promise<void> {
       if (!props.query) return
       state.page = 1
@@ -110,6 +120,7 @@ export default defineComponent({
       await makeItScrollable()
     }
 
+    /** 请求更多 */
     async function searchMore (): Promise<void> {
       if (!state.hasMore || !props.query) return
       state.page++
@@ -124,6 +135,7 @@ export default defineComponent({
       await makeItScrollable()
     }
 
+    /** 手动控制加载 */
     async function makeItScrollable (): Promise<void> {
       if (scroll.value && scroll.value.maxScrollY >= -1) {
         state.manualLoading = true
@@ -132,10 +144,12 @@ export default defineComponent({
       }
     }
 
+    /** 选择歌手 */
     function selectSinger (singer: Singer): void {
       emit('select-singer', singer)
     }
 
+    /** 选择歌曲 */
     function selectSong (song: Song): void {
       emit('select-song', song)
     }

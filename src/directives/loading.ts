@@ -1,6 +1,6 @@
-import { App, Directive } from 'vue'
 import Loading from '@/components/base/loading/index.vue'
 import { createDirective } from '@/utils/create-directive'
+import type { App, Directive } from 'vue'
 
 const loadingDirective: Directive = createDirective(Loading)
 

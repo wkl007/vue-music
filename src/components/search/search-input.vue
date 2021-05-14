@@ -20,7 +20,9 @@ import { defineComponent, reactive, toRefs, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 interface State {
+  /** 输入框实例 */
   inputRef: HTMLInputElement;
+  /** 搜索参数 */
   query: string;
 }
 

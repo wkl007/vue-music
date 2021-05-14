@@ -1,5 +1,5 @@
-import { useStore } from 'vuex'
 import { computed, ComputedRef, Ref, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 
 interface UseCd {
   /** 动画类名  */

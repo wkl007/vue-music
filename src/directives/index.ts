@@ -1,6 +1,6 @@
-import type { App } from 'vue'
 import { setupLoadingDirective } from './loading'
 import { setupNoResultDirective } from './no-result'
+import type { App } from 'vue'
 
 /**
  * 注册全局指令

@@ -1,12 +1,14 @@
-import { save, remove, clear } from '@/utils/array-store'
-import { SEARCH_KEY } from '@/utils/constants'
 import { useStore } from 'vuex'
+import { clear, remove, save } from '@/utils/array-store'
+import { SEARCH_KEY } from '@/utils/constants'
 import * as types from '@/store/mutationTypes'
-import { Song } from '@/types/api/recommend'
 
 interface UseSearchHistory {
+  /** 保存搜索历史 */
   saveSearch: (query: string) => void;
+  /** 删除搜索历史 */
   deleteSearch: (query: string) => void;
+  /** 清空搜索历史 */
   clearSearch: () => void;
 }
 

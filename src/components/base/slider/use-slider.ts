@@ -7,7 +7,9 @@ import type { Page } from '@better-scroll/slide/dist/types/SlidePages'
 BScroll.use(Slide)
 
 interface UseSlider {
+  /** slider 实例 */
   slider: Ref<BScrollConstructor | undefined>;
+  /** 当前项 */
   currentPageIndex: Ref<number>
 }
 

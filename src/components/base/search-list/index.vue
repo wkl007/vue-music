@@ -22,15 +22,17 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { Song } from '@/types/api/recommend'
+import type { Song } from '@/types/api/recommend'
 
 export default defineComponent({
   name: 'SearchList',
   props: {
+    /** 搜索列表 */
     searches: {
       type: Array as PropType<Song[]>,
       default: () => []
     },
+    /** 显示删除图标 */
     showDelete: {
       type: Boolean,
       default: true
@@ -38,10 +40,12 @@ export default defineComponent({
   },
   emits: ['select', 'delete'],
   setup (props, { emit }) {
+    /** 选中某项 */
     function selectItem (song: Song): void {
       emit('select', song)
     }
 
+    /** 删除某项 */
     function deleteItem (song: Song): void {
       emit('delete', song)
     }

@@ -10,12 +10,14 @@ const relativeCls = 'g-relative'
 export function createDirective (component: Component): Directive {
   const name = component.name as string
 
+  /** 添加 */
   function append (el: any): void {
     const style = getComputedStyle(el)
     if (['absolute', 'fixed', 'relative'].indexOf(style.position) === -1) addClass(el, relativeCls)
     el.appendChild(el[name].instance.$el)
   }
 
+  /** 移除 */
   function remove (el: any): void {
     removeClass(el, relativeCls)
     el.removeChild(el[name].instance.$el)

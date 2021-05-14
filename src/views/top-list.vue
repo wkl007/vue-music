@@ -44,10 +44,12 @@ import { Scroll } from '@/components'
 import { TOP_KEY } from '@/utils/constants'
 import { saveSessionStorage } from '@/utils/cache'
 import TopServer from '@/api/top'
-import { Top } from '@/types/api/top'
+import type { Top } from '@/types/api/top'
 
 interface State {
+  /** 排行榜列表 */
   topList: Top[];
+  /** 选中的排行榜 */
   selectedTop: Top | undefined;
 }
 

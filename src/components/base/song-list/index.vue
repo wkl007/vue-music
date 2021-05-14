@@ -37,10 +37,12 @@ export default defineComponent({
   },
   emits: ['select'],
   setup (props, { emit }) {
+    /** 详情描述 */
     function getDesc (item: Song): string {
       return `${item.singer}-${item.album}`
     }
 
+    /** 排行图标 */
     function getRankCls (index: number): string {
       if (index <= 2) {
         return `icon icon${index}`
@@ -49,10 +51,12 @@ export default defineComponent({
       }
     }
 
+    /** 排行文案 */
     function getRankText (index: number): number | undefined {
       if (index > 2) return index + 1
     }
 
+    /** 选择歌曲 */
     function selectItem (song: Song, index: number): void {
       emit('select', { song, index })
     }

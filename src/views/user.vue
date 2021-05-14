@@ -43,10 +43,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, toRefs } from 'vue'
-import { Switches, Scroll, SongList } from '@/components'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { Song } from '@/types/api/recommend'
+import { Switches, Scroll, SongList } from '@/components'
+import type { Song } from '@/types/api/recommend'
 
 export default defineComponent({
   name: 'User',
@@ -69,14 +69,17 @@ export default defineComponent({
     const noResultText = computed(() => state.currentIndex === 0 ? '暂无收藏歌曲' : '您还没有听过歌曲')
     const currentList = computed(() => state.currentIndex === 0 ? favoriteList.value : playHistory.value)
 
+    /** 返回上一页 */
     function back () {
       router.back()
     }
 
+    /** 选中歌曲 */
     function selectSong ({ song }: { song: Song }) {
       store.dispatch('addSong', song)
     }
 
+    /** 随机播放 */
     function random () {
       store.dispatch('randomPlay', currentList.value)
     }

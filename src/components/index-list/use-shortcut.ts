@@ -2,11 +2,12 @@ import { computed, ComputedRef, Ref, ref } from 'vue'
 import type { Singers } from '@/types/api/singer'
 
 interface Props {
+  /** 歌手列表 */
   data: Singers[];
 }
 
 interface UseShortcut {
-  /** 滚动实例 */
+  /** scroll 实例 */
   scrollRef: Ref<HTMLDivElement>;
   /** 索引列表 */
   shortcutList: ComputedRef<string[]>;

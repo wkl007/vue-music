@@ -56,9 +56,9 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import Scroll from '@/components/wrap-scroll/index'
-import type { Singer, Singers } from '@/types/api/singer'
 import { useFixed } from './use-fixed'
 import { useShortcut } from './use-shortcut'
+import type { Singer, Singers } from '@/types/api/singer'
 
 export default defineComponent({
   name: 'IndexList',
@@ -66,6 +66,7 @@ export default defineComponent({
     Scroll
   },
   props: {
+    /** 歌手列表 */
     data: {
       type: Array as PropType<Singers[]>,
       default: () => []

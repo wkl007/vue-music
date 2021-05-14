@@ -1,9 +1,9 @@
+import store from '@/store'
 import { load, saveAll } from '@/utils/array-store'
 import { FAVORITE_KEY, PLAY_KEY } from '@/utils/constants'
 import { processSongs } from '@/api/song'
-import { Song } from '@/types/api/recommend'
-import store from '@/store'
 import * as types from '@/store/mutationTypes'
+import type { Song } from '@/types/api/recommend'
 
 /**
  * 处理缓存歌曲链接

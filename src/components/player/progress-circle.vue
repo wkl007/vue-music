@@ -34,10 +34,12 @@ import { computed, defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'ProgressCircle',
   props: {
+    /** 半径 */
     radius: {
       type: Number,
       default: 100
     },
+    /** 进度 */
     progress: {
       type: Number,
       default: 0

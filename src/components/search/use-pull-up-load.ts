@@ -10,7 +10,7 @@ BScroll.use(ObserveDOM)
 interface Props {
   /** 请求方法 */
   fetchData: () => void;
-  /**  */
+  /** 阻止上拉 */
   preventPullUpLoad: ComputedRef<boolean>;
 }
 

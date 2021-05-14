@@ -57,11 +57,11 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
+import ProgressCircle from './progress-circle.vue'
+import PlayList from './play-list.vue'
 import { useCd } from './use-cd'
 import { useMiniSlider } from './use-mini-slider'
 import * as types from '@/store/mutationTypes'
-import ProgressCircle from './progress-circle.vue'
-import PlayList from './play-list.vue'
 
 export default defineComponent({
   name: 'MiniPlayer',
@@ -70,10 +70,12 @@ export default defineComponent({
     PlayList
   },
   props: {
+    /** 播放进度 */
     progress: {
       type: Number,
       default: 0
     },
+    /** 播放/暂停播放 */
     togglePlay: {
       type: Function,
       default: undefined

@@ -1,6 +1,6 @@
-import { App, Directive } from 'vue'
 import NoResult from '@/components/base/no-result/index.vue'
 import { createDirective } from '@/utils/create-directive'
+import type { App, Directive } from 'vue'
 
 const noResultDirective: Directive = createDirective(NoResult)
 

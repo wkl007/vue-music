@@ -5,6 +5,7 @@ import { Song } from '@/types/api/recommend'
 import { save } from '@/utils/array-store'
 
 interface UsePlayHistory {
+  /** 保存播放列表 */
   savePlay: (song: Song) => void;
 }
 

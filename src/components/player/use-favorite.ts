@@ -1,12 +1,14 @@
-import { useStore } from 'vuex'
 import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { remove, save } from '@/utils/array-store'
 import { FAVORITE_KEY } from '@/utils/constants'
-import { Song } from '@/types/api/recommend'
+import type { Song } from '@/types/api/recommend'
 import * as types from '@/store/mutationTypes'
 
 interface UseFavorite {
+  /** 收藏图标 */
   getFavoriteIcon: (song: Song) => string;
+  /** 收藏/取消收藏 */
   toggleFavorite: (song: Song) => void;
 }
 

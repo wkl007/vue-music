@@ -1,8 +1,8 @@
+import * as types from './mutationTypes'
+import { PlayMode } from '@/utils/constants'
+import { shuffle } from '@/utils'
 import type { CommitFunction, CommitStateFunction, CommitStateGettersFunction } from '@/types/store'
 import type { Song } from '@/types/api/recommend'
-import { PlayMode } from '@/utils/constants'
-import * as types from './mutationTypes'
-import { shuffle } from '@/utils'
 
 /**
  * 顺序播放

@@ -19,6 +19,7 @@ export function useAnimation (): UseAnimation {
   let entering = false
   let leaving = false
 
+  /** 进入 */
   function enter (el: HTMLDivElement, done: () => void): void {
     if (leaving) afterLeave()
     entering = true
@@ -44,12 +45,14 @@ export function useAnimation (): UseAnimation {
     animations.runAnimation(cdWrapperRef.value, 'move', done)
   }
 
+  /** 进入之后 */
   function afterEnter (): void {
     entering = false
     animations.unregisterAnimation('move')
     cdWrapperRef.value.style.animation = ''
   }
 
+  /** 离开 */
   function leave (el: HTMLDivElement, done: () => void): void {
     if (entering) afterEnter()
     leaving = true
@@ -66,6 +69,7 @@ export function useAnimation (): UseAnimation {
     }
   }
 
+  /** 离开之后 */
   function afterLeave (): void {
     leaving = false
     const cdWrapperEl = cdWrapperRef.value

@@ -30,6 +30,7 @@ import type { Slider } from '@/types/api/recommend'
 export default defineComponent({
   name: 'Slider',
   props: {
+    /** 歌手列表 */
     sliders: {
       type: Array as PropType<Slider[]>,
       default: () => []
