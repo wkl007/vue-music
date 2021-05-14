@@ -9,7 +9,7 @@ const resolve = dir => path.join(__dirname, dir)
 
 module.exports = {
   // 基本路径
-  publicPath: process.env.NODE_ENV === 'production' ? 'vue-music' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/vue-music/' : '/',
   // 输出文件目录
   outputDir: 'dist',
   // 用于嵌套生成的静态资产（js，css，img，fonts）的目录
