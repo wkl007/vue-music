@@ -26,19 +26,19 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/singer/:id',
         name: 'SingerDetail',
-        component: () => import(/* webpackChunkName: "singerDetail" */ '@/views/singer-detail.vue')
+        component: () => import(/* webpackChunkName: "singer-detail" */ '@/views/singer-detail.vue')
       }
     ]
   },
   {
     path: '/top-list',
     name: 'TopList',
-    component: () => import(/* webpackChunkName: "topList" */ '@/views/top-list.vue'),
+    component: () => import(/* webpackChunkName: "top-list" */ '@/views/top-list.vue'),
     children: [
       {
         path: '/top-list/:id',
         name: 'TopDetail',
-        component: () => import(/* webpackChunkName: "topDetail" */ '@/views/top-detail.vue')
+        component: () => import(/* webpackChunkName: "top-detail" */ '@/views/top-detail.vue')
       }
     ]
   },
@@ -49,7 +49,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '/search/:id',
-        component: () => import(/* webpackChunkName: "singerDetail" */ '@/views/singer-detail.vue')
+        component: () => import(/* webpackChunkName: "singer-detail" */ '@/views/singer-detail.vue')
       }
     ]
   },
