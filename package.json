@@ -9,6 +9,7 @@
     "lint": "npm run lint:code && npm run lint:style",
     "lint:code": "vue-cli-service lint",
     "lint:style": "vue-cli-service lint:style",
+    "deploy": "num run build && pm2 start backend/prod.server.js -i max",
     "postinstall": "husky install"
   },
   "lint-staged": {
@@ -35,15 +36,12 @@
     "core-js": "^3.12.0",
     "create-keyframe-animation": "^0.1.0",
     "good-storage": "^1.1.1",
-    "js-base64": "^3.6.0",
     "lyric-parser": "^1.0.1",
-    "pinyin": "^2.10.2",
     "register-service-worker": "^1.7.2",
     "vue": "^3.0.4",
     "vue-router": "^4.0.3",
     "vue3-lazy": "^1.0.0-alpha.1",
-    "vuex": "^4.0.0",
-    "xsrf": "^1.0.0"
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
@@ -72,14 +70,17 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-vue": "^7.9.0",
     "husky": "^6.0.0",
+    "js-base64": "^3.6.0",
     "less": "^4.0.0",
     "less-loader": "^8.1.1",
     "lint-staged": "^11.0.0",
+    "pinyin": "^2.10.2",
     "stylelint": "^13.13.1",
     "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-order": "^4.1.0",
     "terser-webpack-plugin": "^5.1.1",
-    "typescript": "~4.2.4"
+    "typescript": "~4.2.4",
+    "xsrf": "^1.0.0"
   }
 }
