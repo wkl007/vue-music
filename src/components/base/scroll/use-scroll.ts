@@ -20,7 +20,7 @@ interface Options {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default function useScroll (wrapperRef: Ref<HTMLDivElement>, options: Options, emit: any): Ref<BScrollConstructor | undefined> {
+export function useScroll (wrapperRef: Ref<HTMLDivElement>, options: Options, emit: any): Ref<BScrollConstructor | undefined> {
   const scroll = ref<BScrollConstructor | undefined>()
 
   onMounted(() => {

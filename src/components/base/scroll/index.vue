@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import useScroll from '@/components/base/scroll/use-scroll'
+import { useScroll } from '@/components/base/scroll/use-scroll'
 
 export default defineComponent({
   name: 'Scroll',

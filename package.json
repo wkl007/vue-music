@@ -44,6 +44,7 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.14.2",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@samhammer/vue-cli-plugin-stylelint": "^2.0.1",
