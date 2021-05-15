@@ -1,4 +1,4 @@
-  name:Build And Deploy TO Aliyun ECS
+  name: Build And Deploy TO Aliyun ECS
 
   on:
     push:
