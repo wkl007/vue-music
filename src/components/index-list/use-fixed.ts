@@ -76,7 +76,7 @@ export function useFixed (props: Props): UseFixed {
       // 区间底部
       const heightBottom = listHeightsVal[i + 1]
       // 判断 scrollY 有没有在区间内
-      if (newY >= heightTop && newY <= heightBottom) {
+      if (newY >= heightTop && newY < heightBottom) {
         currentIndex.value = i
         distance.value = heightBottom - newY
       }
