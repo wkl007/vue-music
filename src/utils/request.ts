@@ -1,5 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axiosRetry from 'axios-retry'
 import { API_URL } from '@/utils/constants'
+
+axiosRetry(axios, { retries: 5 })
 
 const request = axios.create({
   baseURL: API_URL,

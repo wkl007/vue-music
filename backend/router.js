@@ -689,6 +689,8 @@ function registerSearch (app) {
       } else {
         res.json(data)
       }
+    }).catch(e => {
+      res.status(500).send()
     })
   })
 }
