@@ -9,7 +9,7 @@
 .bg-image(@url) {
   background-image: ~"url('@{url}@2x.png')";
 
-  @media (-webkit-min-device-pixel-ratio: 3) {
+  @media (min-device-pixel-ratio: 3) {
     background-image: ~"url('@{url}@3x.png')";
   }
 }
@@ -24,6 +24,6 @@
     right: -10px;
     bottom: -10px;
     left: -10px;
-    content: '';
+    content: "";
   }
 }

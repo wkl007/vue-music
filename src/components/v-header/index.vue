@@ -31,7 +31,7 @@ export default defineComponent({
     margin-right: 9px;
     vertical-align: top;
     background-size: 30px 32px;
-    .bg-image('logo');
+    .bg-image("logo");
   }
 
   .text {

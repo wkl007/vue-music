@@ -486,7 +486,7 @@ export default defineComponent({
               box-sizing: border-box;
               width: 100%;
               height: 100%;
-              border: 10px solid rgba(255, 255, 255, 0.1);
+              border: 10px solid rgb(255 255 255 / 10%);
               border-radius: 50%;
             }
 
@@ -498,7 +498,7 @@ export default defineComponent({
 
         .playing-lyric-wrapper {
           width: 80%;
-          margin: 30px auto 0 auto;
+          margin: 30px auto 0;
           overflow: hidden;
           text-align: center;
 

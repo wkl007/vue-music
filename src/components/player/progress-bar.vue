@@ -117,7 +117,7 @@ export default defineComponent({
     position: relative;
     top: 13px;
     height: 4px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgb(0 0 0 / 30%);
 
     .progress {
       position: absolute;

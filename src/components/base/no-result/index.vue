@@ -44,7 +44,7 @@ export default defineComponent({
       height: 90px;
       margin: 0 auto;
       background-size: 86px 90px;
-      .bg-image('no-result');
+      .bg-image("no-result");
     }
 
     .text {

@@ -124,7 +124,7 @@ export default defineComponent({
   }
 
   .switches-wrapper {
-    margin: 10px 0 30px 0;
+    margin: 10px 0 30px;
   }
 
   .play-btn {

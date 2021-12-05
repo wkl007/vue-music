@@ -342,7 +342,7 @@ export default defineComponent({
 
     .list-add {
       width: 140px;
-      margin: 20px auto 30px auto;
+      margin: 20px auto 30px;
 
       .add {
         display: flex;

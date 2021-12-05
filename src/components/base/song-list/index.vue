@@ -94,15 +94,15 @@ export default defineComponent({
         background-size: 25px 24px;
 
         &.icon0 {
-          .bg-image('first');
+          .bg-image("first");
         }
 
         &.icon1 {
-          .bg-image('second');
+          .bg-image("second");
         }
 
         &.icon2 {
-          .bg-image('third');
+          .bg-image("third");
         }
       }
 

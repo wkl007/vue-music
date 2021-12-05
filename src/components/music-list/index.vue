@@ -304,7 +304,7 @@ export default defineComponent({
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(7, 17, 27, 0.4);
+      background: rgb(7 17 27 / 40%);
     }
   }
 

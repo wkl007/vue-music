@@ -208,7 +208,7 @@ export default defineComponent({
     overflow: hidden;
 
     .hot-keys {
-      margin: 0 20px 20px 20px;
+      margin: 0 20px 20px;
 
       .title {
         margin-bottom: 20px;

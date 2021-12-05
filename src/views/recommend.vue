@@ -150,7 +150,7 @@ export default defineComponent({
         display: flex;
         align-items: center;
         box-sizing: border-box;
-        padding: 0 20px 20px 20px;
+        padding: 0 20px 20px;
 
         .icon {
           flex: 0 0 60px;
