@@ -1,6 +1,6 @@
 const images = {
-  default: require('./default.png').default,
-  loading: require('./loading.gif').default
+  default: require('./default.png'),
+  loading: require('./loading.gif')
 }
 
 export default images
