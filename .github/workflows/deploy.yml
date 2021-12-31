@@ -1,32 +1,38 @@
-  name: Build And Deploy TO Aliyun ECS
+name: Build And Deploy TO Aliyun ECS
 
-  on:
-    push:
-      branches:
-        - master
+on:
+  push:
+    branches:
+      - master
 
-  jobs:
-    build-and-deploy:
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          node-version: [ 16.x ]
-      steps:
-        - name: checkout
-          uses: actions/checkout@v2
-          with:
-            ref: master
-        - name: install
-          run: |
-            npm install
-            npm run-script lint
-            npm run-script build
-        - name: deploy
-          uses: easingthemes/ssh-deploy@v2
-          env:
-            SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-            ARGS: '-avzr --delete'
-            SOURCE: "dist/"
-            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-            REMOTE_USER: ${{ secrets.REMOTE_USER }}
-            TARGET: ${{ secrets.REMOTE_TARGET }}
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '16' ]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - name: use Yarn
+        run: npm install -g yarn
+      - name: install
+        run: |
+          yarn
+          yarn lint
+          yarn build
+      - name: deploy
+        uses: easingthemes/ssh-deploy@v2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: '-avzr --delete'
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
