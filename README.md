@@ -24,11 +24,11 @@ git clone https://github.com/wkl007/vue-music.git
 ```
 
 ### 安装依赖
-```
+```shell
 yarn || npm install
 ```
 
 ### 启动服务
-```
+```shell
 yarn serve || npm run serve
 ```
