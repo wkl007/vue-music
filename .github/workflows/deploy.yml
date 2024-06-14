@@ -20,19 +20,19 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
-      - name: use Yarn
-        run: npm install -g yarn
+      - name: use Pnpm
+        run: npm install -g pnpm
       - name: install
         run: |
-          yarn
-          yarn lint
-          yarn build
-      - name: deploy
-        uses: easingthemes/ssh-deploy@v2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: '-avzr --delete'
-          SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
+          pnpm install
+          pnpm lint
+          pnpm build
+#      - name: deploy
+#        uses: easingthemes/ssh-deploy@v2
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+#          ARGS: '-avzr --delete'
+#          SOURCE: "dist/"
+#          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+#          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+#          TARGET: ${{ secrets.REMOTE_TARGET }}
