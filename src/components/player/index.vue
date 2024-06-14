@@ -1,25 +1,18 @@
 <template>
-  <div
-    class="player"
-    v-show="playList.length"
-  >
+  <div v-show="playList.length" class="player">
     <transition
       name="normal"
       @enter="enter"
       @after-enter="afterEnter"
       @leave="leave"
-      @after-leave="afterLeave"
-    >
-      <div
-        class="normal-player"
-        v-show="fullScreen"
-      >
+      @after-leave="afterLeave">
+      <div v-show="fullScreen" class="normal-player">
         <div class="background">
-          <img :src="currentSong.pic" alt="">
+          <img :src="currentSong.pic" alt="" />
         </div>
         <div class="top">
           <div class="back" @click="goBack">
-            <i class="icon-back"/>
+            <i class="icon-back" />
           </div>
           <h1 class="title">{{ currentSong.name }}</h1>
           <h2 class="subtitle">{{ currentSong.singer }}</h2>
@@ -28,12 +21,8 @@
           class="middle"
           @touchstart.prevent="onMiddleTouchStart"
           @touchmove.prevent="onMiddleTouchMove"
-          @touchend.prevent="onMiddleTouchEnd"
-        >
-          <div
-            class="middle-l"
-            :style="middleLStyle"
-          >
+          @touchend.prevent="onMiddleTouchEnd">
+          <div class="middle-l" :style="middleLStyle">
             <div ref="cdWrapperRef" class="cd-wrapper">
               <div ref="cdRef" class="cd">
                 <img
@@ -41,31 +30,25 @@
                   class="image"
                   :class="cdCls"
                   :src="currentSong.pic"
-                  alt=""
-                >
+                  alt="" />
               </div>
             </div>
             <div class="playing-lyric-wrapper">
               <div class="playing-lyric">{{ playingLyric }}</div>
             </div>
           </div>
-          <scroll
-            class="middle-r"
-            ref="lyricScrollRef"
-            :style="middleRStyle"
-          >
+          <scroll ref="lyricScrollRef" class="middle-r" :style="middleRStyle">
             <div class="lyric-wrapper">
               <div v-if="currentLyric" ref="lyricListRef">
                 <p
-                  class="text"
-                  :class="{'current':currentLineNum===index}"
-                  v-for="(item,index) in currentLyric.lines"
+                  v-for="(item, index) in currentLyric.lines"
                   :key="index"
-                >
+                  class="text"
+                  :class="{ current: currentLineNum === index }">
                   {{ item.txt }}
                 </p>
               </div>
-              <div class="pure-music" v-show="pureMusicLyric">
+              <div v-show="pureMusicLyric" class="pure-music">
                 <p>{{ pureMusicLyric }}</p>
               </div>
             </div>
@@ -73,14 +56,10 @@
         </div>
         <div class="bottom">
           <div class="dot-wrapper">
-          <span
-            class="dot"
-            :class="currentShow==='cd'?'active':''"
-          />
+            <span class="dot" :class="currentShow === 'cd' ? 'active' : ''" />
             <span
               class="dot"
-              :class="currentShow==='lyric'?'active':''"
-            />
+              :class="currentShow === 'lyric' ? 'active' : ''" />
           </div>
           <div class="progress-wrapper">
             <span class="time time-l">{{ formatTime(currentTime) }}</span>
@@ -89,10 +68,11 @@
                 ref="barRef"
                 :progress="progress"
                 @progress-changing="onProgressChanging"
-                @progress-changed="onProgressChanged"
-              />
+                @progress-changed="onProgressChanged" />
             </div>
-            <span class="time time-r">{{ formatTime(currentSong.duration) }}</span>
+            <span class="time time-r">{{
+              formatTime(currentSong.duration)
+            }}</span>
           </div>
           <div class="operators">
             <div class="icon i-left">
@@ -108,228 +88,243 @@
               <i class="icon-next" @click="next"></i>
             </div>
             <div class="icon i-right">
-              <i :class="getFavoriteIcon(currentSong)" @click="toggleFavorite(currentSong)"></i>
+              <i
+                :class="getFavoriteIcon(currentSong)"
+                @click="toggleFavorite(currentSong)"></i>
             </div>
           </div>
         </div>
       </div>
     </transition>
     <!-- 迷你播放器 -->
-    <mini-player
-      :progress="progress"
-      :toggle-play="togglePlay"
-    />
+    <mini-player :progress="progress" :toggle-play="togglePlay" />
     <audio
       ref="audioRef"
       @pause="pause"
       @canplay="ready"
       @error="error"
       @timeupdate="updateTime"
-      @ended="end"
-    />
+      @ended="end" />
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
-import { useStore } from 'vuex'
-import { Scroll } from '@/components'
-import ProgressBar from './progress-bar.vue'
-import MiniPlayer from './mini-player.vue'
-import { useMode } from './use-mode'
-import { useFavorite } from './use-favorite'
-import { useCd } from './use-cd'
-import { useLyric } from './use-lyric'
-import { useMiddleInteractive } from './use-middle-interactive'
-import { useAnimation } from './use-animation'
-import { usePlayHistory } from './use-play-history'
-import { PlayMode } from '@/utils/constants'
-import { formatTime } from '@/utils'
-import * as types from '@/store/mutationTypes'
-import type { Song } from '@/types/api/recommend'
-
-interface State {
-  /** audio 实例 */
-  audioRef: HTMLAudioElement;
-  /** 进度条示例 */
-  barRef: HTMLDivElement | any;
-  /** 可以播放 */
-  songReady: boolean;
-  /** 当前播放时间 */
-  currentTime: number;
-}
+<script>
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  reactive,
+  toRefs,
+  watch,
+} from 'vue';
+import { useStore } from 'vuex';
+import { Scroll } from '@/components/index.js';
+import ProgressBar from './progress-bar.vue';
+import MiniPlayer from './mini-player.vue';
+import { useMode } from './use-mode.js';
+import { useFavorite } from './use-favorite.js';
+import { useCd } from './use-cd.js';
+import { useLyric } from './use-lyric.js';
+import { useMiddleInteractive } from './use-middle-interactive.js';
+import { useAnimation } from './use-animation.js';
+import { usePlayHistory } from './use-play-history.js';
+import { PlayMode } from '@/utils/constants';
+import { formatTime } from '@/utils';
+import * as types from '@/store/mutationTypes.js';
 
 export default defineComponent({
   name: 'Player',
   components: {
     ProgressBar,
     Scroll,
-    MiniPlayer
+    MiniPlayer,
   },
-  setup () {
-    const state = reactive<State>({
+  setup() {
+    const state = reactive({
       audioRef: document.createElement('audio'),
       barRef: document.createElement('div'),
       songReady: false,
-      currentTime: 0
-    })
-    let progressChanging = false
+      currentTime: 0,
+    });
+    let progressChanging = false;
 
     // vuex
-    const store = useStore()
-    const fullScreen = computed<boolean>(() => store.state.fullScreen)
-    const playing = computed<boolean>(() => store.state.playing)
-    const currentIndex = computed<number>(() => store.state.currentIndex)
-    const playMode = computed<PlayMode>(() => store.state.playMode)
-    const currentSong = computed<Song>(() => store.getters.currentSong)
-    const playList = computed<Song[]>(() => store.state.playList)
+    const store = useStore();
+    const fullScreen = computed(() => store.state.fullScreen);
+    const playing = computed(() => store.state.playing);
+    const currentIndex = computed(() => store.state.currentIndex);
+    const playMode = computed(() => store.state.playMode);
+    const currentSong = computed(() => store.getters.currentSong);
+    const playList = computed(() => store.state.playList);
 
     // computed
-    const playIcon = computed(() => playing.value ? 'icon-pause' : 'icon-play')
-    const disableCls = computed(() => state.songReady ? '' : 'disable')
-    const progress = computed(() => state.currentTime / currentSong.value.duration)
+    const playIcon = computed(() =>
+      playing.value ? 'icon-pause' : 'icon-play',
+    );
+    const disableCls = computed(() => (state.songReady ? '' : 'disable'));
+    const progress = computed(
+      () => state.currentTime / currentSong.value.duration,
+    );
 
     // hooks
-    const { modeIcon, changeMode } = useMode()
-    const { getFavoriteIcon, toggleFavorite } = useFavorite()
-    const { cdCls, cdRef, cdImageRef } = useCd()
-    const { songReady, currentTime } = toRefs(state)
-    const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({ songReady, currentTime })
-    const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
-    const { cdWrapperRef, enter, afterEnter, leave, afterLeave } = useAnimation()
-    const { savePlay } = usePlayHistory()
+    const { modeIcon, changeMode } = useMode();
+    const { getFavoriteIcon, toggleFavorite } = useFavorite();
+    const { cdCls, cdRef, cdImageRef } = useCd();
+    const { songReady, currentTime } = toRefs(state);
+    const {
+      currentLyric,
+      currentLineNum,
+      pureMusicLyric,
+      playingLyric,
+      lyricScrollRef,
+      lyricListRef,
+      playLyric,
+      stopLyric,
+    } = useLyric({ songReady, currentTime });
+    const {
+      currentShow,
+      middleLStyle,
+      middleRStyle,
+      onMiddleTouchStart,
+      onMiddleTouchMove,
+      onMiddleTouchEnd,
+    } = useMiddleInteractive();
+    const { cdWrapperRef, enter, afterEnter, leave, afterLeave } =
+      useAnimation();
+    const { savePlay } = usePlayHistory();
 
     /** 退出全屏 */
-    function goBack (): void {
-      store.commit(types.SET_FULL_SCREEN, false)
+    function goBack() {
+      store.commit(types.SET_FULL_SCREEN, false);
     }
 
     /** 播放/暂停 */
-    function togglePlay (): void {
-      if (!state.songReady) return
-      store.commit(types.SET_PLAYING, !playing.value)
+    function togglePlay() {
+      if (!state.songReady) return;
+      store.commit(types.SET_PLAYING, !playing.value);
     }
 
     /** 上一首 */
-    function prev (): void {
-      const list = playList.value
-      if (!list.length || !state.songReady) return
+    function prev() {
+      const list = playList.value;
+      if (!list.length || !state.songReady) return;
       if (list.length === 1) {
-        loop()
+        loop();
       } else {
-        let index = currentIndex.value - 1
+        let index = currentIndex.value - 1;
         if (index === -1) {
-          index = list.length - 1
+          index = list.length - 1;
         }
-        store.commit(types.SET_CURRENT_INDEX, index)
+        store.commit(types.SET_CURRENT_INDEX, index);
       }
     }
 
     /** 下一首 */
-    function next (): void {
-      const list = playList.value
-      if (!list.length || !state.songReady) return
+    function next() {
+      const list = playList.value;
+      if (!list.length || !state.songReady) return;
       if (list.length === 1) {
-        loop()
+        loop();
       } else {
-        let index = currentIndex.value + 1
+        let index = currentIndex.value + 1;
         if (index === list.length) {
-          index = 0
+          index = 0;
         }
-        store.commit(types.SET_CURRENT_INDEX, index)
+        store.commit(types.SET_CURRENT_INDEX, index);
       }
     }
 
     /** 循环播放 */
-    function loop (): void {
-      const audioEl = state.audioRef
-      audioEl.currentTime = 0
-      audioEl.play()
-      store.commit(types.SET_PLAYING, true)
+    function loop() {
+      const audioEl = state.audioRef;
+      audioEl.currentTime = 0;
+      audioEl.play();
+      store.commit(types.SET_PLAYING, true);
     }
 
     /** 播放器暂停 */
-    function pause (): void {
-      store.commit(types.SET_PLAYING, false)
+    function pause() {
+      store.commit(types.SET_PLAYING, false);
     }
 
     /** 音频可以播放 */
-    function ready (): void {
-      if (state.songReady) return
-      state.songReady = true
-      playLyric()
-      savePlay(currentSong.value)
+    function ready() {
+      if (state.songReady) return;
+      state.songReady = true;
+      playLyric();
+      savePlay(currentSong.value);
     }
 
     /** 加载错误 */
-    function error (): void {
-      state.songReady = true
+    function error() {
+      state.songReady = true;
     }
 
     /** 更新时间 */
-    function updateTime (): void {
-      if (progressChanging) return
-      state.currentTime = state.audioRef.currentTime
+    function updateTime() {
+      if (progressChanging) return;
+      state.currentTime = state.audioRef.currentTime;
     }
 
     /** 播放结束 */
-    function end (): void {
-      state.currentTime = 0
+    function end() {
+      state.currentTime = 0;
       if (playMode.value === PlayMode.LOOP) {
-        loop()
+        loop();
       } else {
-        next()
+        next();
       }
     }
 
     /** 进度条拖动 */
-    function onProgressChanging (progress: number): void {
-      progressChanging = true
-      state.currentTime = currentSong.value.duration * progress
-      playLyric()
-      stopLyric()
+    function onProgressChanging(progress) {
+      progressChanging = true;
+      state.currentTime = currentSong.value.duration * progress;
+      playLyric();
+      stopLyric();
     }
 
     /** 进度条拖动结束 */
-    function onProgressChanged (progress: number): void {
-      progressChanging = false
-      state.audioRef.currentTime = state.currentTime = currentSong.value.duration * progress
+    function onProgressChanged(progress) {
+      progressChanging = false;
+      state.audioRef.currentTime = state.currentTime =
+        currentSong.value.duration * progress;
       if (!playing.value) {
-        store.commit(types.SET_PLAYING, true)
+        store.commit(types.SET_PLAYING, true);
       }
-      playLyric()
+      playLyric();
     }
 
     /** 监听当前歌曲信息 */
     watch(currentSong, (newSong) => {
-      if (!newSong.id || !newSong.url) return
-      state.currentTime = 0
-      state.songReady = false
-      const audioEl = state.audioRef
-      audioEl.src = newSong.url
-      audioEl.play()
-      store.commit(types.SET_PLAYING, true)
-    })
+      if (!newSong.id || !newSong.url) return;
+      state.currentTime = 0;
+      state.songReady = false;
+      const audioEl = state.audioRef;
+      audioEl.src = newSong.url;
+      audioEl.play();
+      store.commit(types.SET_PLAYING, true);
+    });
 
     /** 监听播放状态 */
     watch(playing, (newPlaying) => {
-      if (!state.songReady) return
-      const audioEl = state.audioRef
+      if (!state.songReady) return;
+      const audioEl = state.audioRef;
       if (newPlaying) {
-        audioEl.play()
-        playLyric()
+        audioEl.play();
+        playLyric();
       } else {
-        audioEl.pause()
-        stopLyric()
+        audioEl.pause();
+        stopLyric();
       }
-    })
+    });
 
     /** 监听全屏状态设置进度条 */
     watch(fullScreen, async (newFullScreen) => {
-      if (!newFullScreen) return
-      await nextTick()
-      state.barRef.setOffset(progress.value)
-    })
+      if (!newFullScreen) return;
+      await nextTick();
+      state.barRef.setOffset(progress.value);
+    });
 
     return {
       ...toRefs(state),
@@ -380,10 +375,10 @@ export default defineComponent({
       enter,
       afterEnter,
       leave,
-      afterLeave
-    }
-  }
-})
+      afterLeave,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

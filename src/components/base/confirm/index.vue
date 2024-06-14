@@ -1,21 +1,15 @@
 <template>
   <teleport to="body">
     <transition name="confirm-fade">
-      <div class="confirm" v-show="visible">
+      <div v-show="visible" class="confirm">
         <div class="confirm-wrapper">
           <div class="confirm-content">
             <p class="text">{{ text }}</p>
             <div class="operate">
-              <div
-                class="operate-btn left"
-                @click="confirm"
-              >
+              <div class="operate-btn left" @click="confirm">
                 {{ confirmBtnText }}
               </div>
-              <div
-                class="operate-btn"
-                @click="cancel"
-              >
+              <div class="operate-btn" @click="cancel">
                 {{ cancelBtnText }}
               </div>
             </div>
@@ -26,8 +20,8 @@
   </teleport>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script>
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'Confirm',
@@ -35,43 +29,43 @@ export default defineComponent({
     /** 文本 */
     text: {
       type: String,
-      default: ''
+      default: '',
     },
     /** 确认文案 */
     confirmBtnText: {
       type: String,
-      default: '确定'
+      default: '确定',
     },
     /** 取消文案 */
     cancelBtnText: {
       type: String,
-      default: '取消'
-    }
+      default: '取消',
+    },
   },
   emits: ['confirm', 'cancel'],
-  setup (props, { emit }) {
-    const visible = ref(false)
+  setup(props, { emit }) {
+    const visible = ref(false);
 
     /** 显示 */
-    function show (): void {
-      visible.value = true
+    function show() {
+      visible.value = true;
     }
 
     /** 隐藏 */
-    function hide (): void {
-      visible.value = false
+    function hide() {
+      visible.value = false;
     }
 
     /** 确认 */
-    function confirm (): void {
-      hide()
-      emit('confirm')
+    function confirm() {
+      hide();
+      emit('confirm');
     }
 
     /** 取消 */
-    function cancel (): void {
-      hide()
-      emit('cancel')
+    function cancel() {
+      hide();
+      emit('cancel');
     }
 
     return {
@@ -80,10 +74,10 @@ export default defineComponent({
       show,
       hide,
       confirm,
-      cancel
-    }
-  }
-})
+      cancel,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

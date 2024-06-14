@@ -8,12 +8,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script>
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'VHeader'
-})
+  name: 'VHeader',
+});
 </script>
 
 <style scoped lang="less">
@@ -31,7 +31,7 @@ export default defineComponent({
     margin-right: 9px;
     vertical-align: top;
     background-size: 30px 32px;
-    .bg-image("logo");
+    .bg-image('logo');
   }
 
   .text {

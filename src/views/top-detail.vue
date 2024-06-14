@@ -5,17 +5,20 @@
       :loading="loading"
       :pic="pic"
       :title="title"
-      rank
-    />
+      rank />
   </div>
 </template>
 
-<script lang="ts">
-import TopServer from '@/api/top'
-import { TOP_KEY } from '@/utils/constants'
-import { createDetailComponent } from '@/utils/create-detail-component'
+<script>
+import TopServer from '@/apis/top';
+import { TOP_KEY } from '@/utils/constants';
+import { createDetailComponent } from '@/utils/create-detail-component';
 
-export default createDetailComponent('TopDetail', TOP_KEY, TopServer.getTopDetail)
+export default createDetailComponent(
+  'TopDetail',
+  TOP_KEY,
+  TopServer.getTopDetail,
+);
 </script>
 
 <style scoped lang="less">

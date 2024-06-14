@@ -2,75 +2,63 @@
   <div class="search-input">
     <i class="icon-search"></i>
     <input
-      class="input-inner"
       v-model="query"
+      class="input-inner"
       :placeholder="placeholder"
-      type="text"
-    >
-    <i
-      v-show="query"
-      class="icon-dismiss"
-      @click="clear"
-    ></i>
+      type="text" />
+    <i v-show="query" class="icon-dismiss" @click="clear"></i>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, toRefs, watch } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
-
-interface State {
-  /** 输入框实例 */
-  inputRef: HTMLInputElement;
-  /** 搜索参数 */
-  query: string;
-}
+<script>
+import { defineComponent, reactive, toRefs, watch } from 'vue';
+import { useDebounceFn } from '@vueuse/core';
 
 export default defineComponent({
   name: 'SearchInput',
   props: {
     modelValue: {
       type: String,
-      default: ''
+      default: '',
     },
     placeholder: {
       type: String,
-      default: '搜索歌曲，歌手'
-    }
+      default: '搜索歌曲，歌手',
+    },
   },
   emits: ['update:modelValue'],
-  setup (props, { emit }) {
-    const state = reactive<State>({
+  setup(props, { emit }) {
+    const state = reactive({
       inputRef: document.createElement('input'),
-      query: props.modelValue
-    })
+      query: props.modelValue,
+    });
 
     /** 清空 */
-    function clear () {
-      state.query = ''
+    function clear() {
+      state.query = '';
     }
 
     watch(
       () => state.query,
       useDebounceFn((newQuery) => {
-        emit('update:modelValue', newQuery.trim())
-      }, 300)
-    )
+        emit('update:modelValue', newQuery.trim());
+      }, 300),
+    );
 
     watch(
       () => props.modelValue,
       (newModelValue) => {
-        state.query = newModelValue
-      }
-    )
+        state.query = newModelValue;
+      },
+    );
 
     return {
       ...toRefs(state),
 
-      clear
-    }
-  }
-})
+      clear,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

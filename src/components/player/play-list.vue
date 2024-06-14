@@ -1,40 +1,24 @@
 <template>
   <teleport to="body">
     <transition name="list-fade">
-      <div
-        class="play-list"
-        v-show="visible&&playList.length"
-        @click="hide"
-      >
+      <div v-show="visible && playList.length" class="play-list" @click="hide">
         <div class="list-wrapper" @click.stop>
           <div class="list-header">
             <h1 class="title">
-              <i
-                class="icon"
-                :class="modeIcon"
-                @click="changeMode"
-              ></i>
+              <i class="icon" :class="modeIcon" @click="changeMode"></i>
               <span class="text">{{ modeText }}</span>
               <span class="clear" @click="showConfirm">
                 <i class="icon-clear"></i>
               </span>
             </h1>
           </div>
-          <scroll
-            ref="scrollRef"
-            class="list-content"
-          >
-            <transition-group
-              ref="listRef"
-              name="list"
-              tag="ul"
-            >
+          <scroll ref="scrollRef" class="list-content">
+            <transition-group ref="listRef" name="list" tag="ul">
               <li
-                class="item"
                 v-for="item in sequenceList"
                 :key="item.id"
-                @click="selectItem(item)"
-              >
+                class="item"
+                @click="selectItem(item)">
                 <i class="current" :class="getCurrentIcon(item)"></i>
                 <span class="text">{{ item.name }}</span>
                 <span class="favorite" @click.stop="toggleFavorite(item)">
@@ -42,9 +26,8 @@
                 </span>
                 <span
                   class="delete"
-                  @click.stop="removeSong(item)"
-                  :class="{'disable':removing}"
-                >
+                  :class="{ disable: removing }"
+                  @click.stop="removeSong(item)">
                   <i class="icon-delete"></i>
                 </span>
               </li>
@@ -64,141 +47,132 @@
           ref="confirmRef"
           text="是否清空播放列表？"
           confirm-btn-text="清空"
-          @confirm="confirmClear"
-        />
-        <add-song ref="addSongRef"/>
+          @confirm="confirmClear" />
+        <add-song ref="addSongRef" />
       </div>
     </transition>
   </teleport>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
-import { useStore } from 'vuex'
-import { promiseTimeout } from '@vueuse/core'
-import Scroll from '@/components/wrap-scroll/index'
-import Confirm from '@/components/base/confirm/index.vue'
-import AddSong from '@/components/add-song/index.vue'
-import { useMode } from './use-mode'
-import { useFavorite } from './use-favorite'
-import * as types from '@/store/mutationTypes'
-import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
-import type { Song } from '@/types/api/recommend'
-
-interface State {
-  /** scroll 实例 */
-  scrollRef: BScrollConstructor | undefined;
-  /** 列表实例 */
-  listRef: any;
-  /** confirm 实例 */
-  confirmRef: any;
-  /** addSong 实例 */
-  addSongRef: any;
-  /** 显示播放列表 */
-  visible: boolean;
-  /** 正在删除标识 */
-  removing: boolean;
-}
+<script>
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  reactive,
+  toRefs,
+  watch,
+} from 'vue';
+import { useStore } from 'vuex';
+import { promiseTimeout } from '@vueuse/core';
+import Scroll from '@/components/wrap-scroll/index.js';
+import Confirm from '@/components/base/confirm/index.vue';
+import AddSong from '@/components/add-song/index.vue';
+import { useMode } from './use-mode.js';
+import { useFavorite } from './use-favorite.js';
+import * as types from '@/store/mutationTypes.js';
 
 export default defineComponent({
   name: 'PlayList',
   components: {
     Scroll,
     Confirm,
-    AddSong
+    AddSong,
   },
-  setup () {
-    const store = useStore()
-    const state = reactive<State>({
+  setup() {
+    const store = useStore();
+    const state = reactive({
       scrollRef: undefined,
       listRef: document.createElement('div'),
       confirmRef: document.createElement('div'),
       addSongRef: document.createElement('div'),
       visible: false,
-      removing: false
-    })
+      removing: false,
+    });
 
-    const playList = computed<Song[]>(() => store.state.playList)
-    const sequenceList = computed<Song[]>(() => store.state.sequenceList)
-    const currentSong = computed<Song>(() => store.getters.currentSong)
+    const playList = computed(() => store.state.playList);
+    const sequenceList = computed(() => store.state.sequenceList);
+    const currentSong = computed(() => store.getters.currentSong);
 
-    const { modeIcon, modeText, changeMode } = useMode()
-    const { getFavoriteIcon, toggleFavorite } = useFavorite()
+    const { modeIcon, modeText, changeMode } = useMode();
+    const { getFavoriteIcon, toggleFavorite } = useFavorite();
 
     /** 显示 */
-    async function show (): Promise<void> {
-      state.visible = true
+    async function show() {
+      state.visible = true;
 
-      await nextTick()
-      refreshScroll()
-      scrollToCurrent()
+      await nextTick();
+      refreshScroll();
+      scrollToCurrent();
     }
 
     /** 隐藏 */
-    function hide (): void {
-      state.visible = false
+    function hide() {
+      state.visible = false;
     }
 
     /** 当前播放 icon */
-    function getCurrentIcon (song: Song): string | void {
+    function getCurrentIcon(song) {
       if (song.id === currentSong.value.id) {
-        return 'icon-play'
+        return 'icon-play';
       }
     }
 
     /** 刷新 */
-    function refreshScroll () {
-      state.scrollRef?.scroll.refresh()
+    function refreshScroll() {
+      state.scrollRef?.scroll.refresh();
     }
 
     /** 滚动到当前播放位置 */
-    function scrollToCurrent () {
-      const index = sequenceList.value.findIndex(item => currentSong.value.id === item.id)
-      if (index === -1) return
-      const target = state.listRef.$el.children[index]
-      state.scrollRef?.scroll.scrollToElement(target, 300)
+    function scrollToCurrent() {
+      const index = sequenceList.value.findIndex(
+        (item) => currentSong.value.id === item.id,
+      );
+      if (index === -1) return;
+      const target = state.listRef.$el.children[index];
+      state.scrollRef?.scroll.scrollToElement(target, 300);
     }
 
     /** 选中某项歌曲 */
-    function selectItem (song: Song): void {
-      const index = playList.value.findIndex(item => song.id === item.id)
+    function selectItem(song) {
+      const index = playList.value.findIndex((item) => song.id === item.id);
 
-      store.commit(types.SET_CURRENT_INDEX, index)
-      store.commit(types.SET_PLAYING, true)
+      store.commit(types.SET_CURRENT_INDEX, index);
+      store.commit(types.SET_PLAYING, true);
     }
 
     /** 移除歌曲 */
-    async function removeSong (song: Song): Promise<void> {
-      if (state.removing) return
-      state.removing = true
-      await store.dispatch('removeSong', song)
-      if (!playList.value.length) hide()
-      await promiseTimeout(300)
-      state.removing = false
+    async function removeSong(song) {
+      if (state.removing) return;
+      state.removing = true;
+      await store.dispatch('removeSong', song);
+      if (!playList.value.length) hide();
+      await promiseTimeout(300);
+      state.removing = false;
     }
 
     /** 显示确认弹框 */
-    function showConfirm (): void {
-      state.confirmRef.show()
+    function showConfirm() {
+      state.confirmRef.show();
     }
 
     /** 清空播放列表  */
-    function confirmClear (): void {
-      store.dispatch('clearSongList')
-      hide()
+    function confirmClear() {
+      store.dispatch('clearSongList');
+      hide();
     }
 
     /** 添加歌曲 */
-    function showAddSong () {
-      state.addSongRef.show()
+    function showAddSong() {
+      state.addSongRef.show();
     }
 
     /** 监听当前歌曲 */
     watch(currentSong, async (newSong) => {
-      if (!state.visible || !newSong.id) return
-      await nextTick()
-      scrollToCurrent()
-    })
+      if (!state.visible || !newSong.id) return;
+      await nextTick();
+      scrollToCurrent();
+    });
 
     return {
       ...toRefs(state),
@@ -219,10 +193,10 @@ export default defineComponent({
       removeSong,
       showConfirm,
       confirmClear,
-      showAddSong
-    }
-  }
-})
+      showAddSong,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

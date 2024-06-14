@@ -7,26 +7,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script>
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'NoResult',
-  setup () {
-    const title = ref('抱歉，没有结果')
+  setup() {
+    const title = ref('抱歉，没有结果');
 
     /** 设置标题 */
-    function setTitle (str: string) {
-      title.value = str
+    function setTitle(str) {
+      title.value = str;
     }
 
     return {
       title,
 
-      setTitle
-    }
-  }
-})
+      setTitle,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">
@@ -44,7 +44,7 @@ export default defineComponent({
       height: 90px;
       margin: 0 auto;
       background-size: 86px 90px;
-      .bg-image("no-result");
+      .bg-image('no-result');
     }
 
     .text {

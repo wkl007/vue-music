@@ -1,146 +1,109 @@
 <template>
   <div class="music-list">
-    <div
-      class="back"
-      @click="goBack"
-    >
+    <div class="back" @click="goBack">
       <i class="icon-back"></i>
     </div>
     <h1 class="title">{{ title }}</h1>
-    <div
-      ref="bgImageRef"
-      class="bg-image"
-      :style="bgImageStyle"
-    >
-      <div
-        class="play-btn-wrapper"
-        :style="playBtnStyle"
-      >
-        <div
-          class="play-btn"
-          v-show="songs.length"
-          @click="random"
-        >
+    <div ref="bgImageRef" class="bg-image" :style="bgImageStyle">
+      <div class="play-btn-wrapper" :style="playBtnStyle">
+        <div v-show="songs.length" class="play-btn" @click="random">
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
       </div>
-      <div
-        class="filter"
-        :style="filterStyle"
-      />
+      <div class="filter" :style="filterStyle" />
     </div>
     <scroll
+      v-loading="loading"
+      v-no-result:[noResultText]="noResult"
       class="list"
       :style="scrollStyle"
       :probe-type="3"
-      v-loading="loading"
-      v-no-result:[noResultText]="noResult"
-      @scroll="onScroll"
-    >
+      @scroll="onScroll">
       <div class="song-list-wrapper">
-        <song-list
-          :songs="songs"
-          :rank="rank"
-          @select="selectItem"
-        />
+        <song-list :songs="songs" :rank="rank" @select="selectItem" />
       </div>
     </scroll>
   </div>
 </template>
 
-<script lang="ts">
-import { computed, ComputedRef, defineComponent, onMounted, PropType, reactive, toRefs } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import Scroll from '../wrap-scroll/index'
-import SongList from '../base/song-list/index.vue'
-import type { Position } from '@better-scroll/slide/dist/types/SlidePages'
-import type { Song } from '@/types/api/recommend'
+<script>
+import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import Scroll from '../wrap-scroll/index.js';
+import SongList from '../base/song-list/index.vue';
 
-const RESERVED_HEIGHT = 40 // 顶部高度
-
-interface State {
-  /** 图片高度 */
-  imageHeight: number;
-  /** 滚动距离 */
-  scrollY: number;
-  /** 最大滚动距离 */
-  maxTranslateY: number;
-  /** 头图实例 */
-  bgImageRef: HTMLDivElement;
-  /** 没有结果 */
-  noResult: ComputedRef<boolean>;
-}
+const RESERVED_HEIGHT = 40; // 顶部高度
 
 export default defineComponent({
   name: 'MusicList',
   components: {
     Scroll,
-    SongList
+    SongList,
   },
   props: {
     /** 歌曲列表 */
     songs: {
-      type: Array as PropType<Song[]>,
-      default: () => []
+      type: Array,
+      default: () => [],
     },
     /** 标题 */
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     /** 头图 */
     pic: {
       type: String,
-      default: ''
+      default: '',
     },
     /** 加载状态 */
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /** 无歌曲文案 */
     noResultText: {
       type: String,
-      default: '抱歉，没有找到可播放的歌曲'
+      default: '抱歉，没有找到可播放的歌曲',
     },
     /** 是否排行榜 */
     rank: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  setup (props) {
-    const store = useStore()
-    const router = useRouter()
-    const state = reactive<State>({
+  setup(props) {
+    const store = useStore();
+    const router = useRouter();
+    const state = reactive({
       imageHeight: 0,
       scrollY: 0,
       maxTranslateY: 0,
       bgImageRef: document.createElement('div'),
-      noResult: computed(() => !props.loading && !props.songs.length)
-    })
-    const playList = computed(() => store.state.playList)
+      noResult: computed(() => !props.loading && !props.songs.length),
+    });
+    const playList = computed(() => store.state.playList);
 
     /** 头图样式 */
     const bgImageStyle = computed(() => {
-      const scrollY = state.scrollY
-      let zIndex = 0
-      let paddingTop: string | number = '70%'
-      let height: string | number = '0'
-      let translateZ = 0
+      const scrollY = state.scrollY;
+      let zIndex = 0;
+      let paddingTop = '70%';
+      let height = '0';
+      let translateZ = 0;
 
       if (scrollY > state.maxTranslateY) {
-        zIndex = 10
-        paddingTop = 0
-        height = `${RESERVED_HEIGHT}px`
-        translateZ = 1
+        zIndex = 10;
+        paddingTop = 0;
+        height = `${RESERVED_HEIGHT}px`;
+        translateZ = 1;
       }
 
-      let scale = 1
+      let scale = 1;
       if (scrollY < 0) {
-        scale = 1 + Math.abs(scrollY / state.imageHeight)
+        scale = 1 + Math.abs(scrollY / state.imageHeight);
       }
 
       return {
@@ -148,65 +111,67 @@ export default defineComponent({
         paddingTop,
         height,
         backgroundImage: `url(${props.pic})`,
-        transform: `scale(${scale})translateZ(${translateZ}px)`
-      }
-    })
+        transform: `scale(${scale})translateZ(${translateZ}px)`,
+      };
+    });
 
     /** 播放按钮样式 */
     const playBtnStyle = computed(() => {
-      let display = ''
-      if (state.scrollY >= state.maxTranslateY) display = 'none'
+      let display = '';
+      if (state.scrollY >= state.maxTranslateY) display = 'none';
       return {
-        display
-      }
-    })
+        display,
+      };
+    });
 
     /** 滚动组件样式 */
     const scrollStyle = computed(() => {
-      const bottom = playList.value.length ? '60px' : '0'
+      const bottom = playList.value.length ? '60px' : '0';
       return {
         top: `${state.imageHeight}px`,
-        bottom
-      }
-    })
+        bottom,
+      };
+    });
 
     /** 毛玻璃样式 */
     const filterStyle = computed(() => {
-      let blur = 0
-      const scrollY = state.scrollY
-      const imageHeight = state.imageHeight
+      let blur = 0;
+      const scrollY = state.scrollY;
+      const imageHeight = state.imageHeight;
       if (scrollY >= 0) {
-        blur = Math.min(state.maxTranslateY / imageHeight, scrollY / imageHeight) * 20
+        blur =
+          Math.min(state.maxTranslateY / imageHeight, scrollY / imageHeight) *
+          20;
       }
       return {
-        backdropFilter: `blur(${blur}px)`
-      }
-    })
+        backdropFilter: `blur(${blur}px)`,
+      };
+    });
 
     /** 返回 */
-    function goBack () {
-      router.back()
+    function goBack() {
+      router.back();
     }
 
     /** 随机播放 */
-    function random () {
-      store.dispatch('randomPlay', { list: props.songs })
+    function random() {
+      store.dispatch('randomPlay', { list: props.songs });
     }
 
     /** 监听滚动 */
-    function onScroll (pos: Position): void {
-      state.scrollY = -pos.y
+    function onScroll(pos) {
+      state.scrollY = -pos.y;
     }
 
     /** 歌曲选择 */
-    function selectItem ({ song, index }: { song: Song; index: number }) {
-      store.dispatch('selectPlay', { list: props.songs, index })
+    function selectItem({ song, index }) {
+      store.dispatch('selectPlay', { list: props.songs, index });
     }
 
     onMounted(() => {
-      state.imageHeight = state.bgImageRef.clientHeight
-      state.maxTranslateY = state.imageHeight - RESERVED_HEIGHT
-    })
+      state.imageHeight = state.bgImageRef.clientHeight;
+      state.maxTranslateY = state.imageHeight - RESERVED_HEIGHT;
+    });
 
     return {
       ...toRefs(state),
@@ -218,10 +183,10 @@ export default defineComponent({
       goBack,
       onScroll,
       random,
-      selectItem
-    }
-  }
-})
+      selectItem,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

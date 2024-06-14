@@ -1,11 +1,10 @@
 <template>
   <div class="tab">
     <router-link
-      class="tab-item"
       v-for="item in tabList"
       :key="item.path"
-      :to="item.path"
-    >
+      class="tab-item"
+      :to="item.path">
       <span class="tab-link">
         {{ item.name }}
       </span>
@@ -13,41 +12,36 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script>
+import { defineComponent } from 'vue';
 
-interface TabItem {
-  name: string;
-  path: string;
-}
-
-const tabList: TabItem[] = [
+const tabList = [
   {
     name: '推荐',
-    path: '/recommend'
+    path: '/recommend',
   },
   {
     name: '歌手',
-    path: '/singer'
+    path: '/singer',
   },
   {
     name: '排行',
-    path: '/top-list'
+    path: '/top-list',
   },
   {
     name: '搜索',
-    path: '/search'
-  }
-]
+    path: '/search',
+  },
+];
 
 export default defineComponent({
   name: 'VTab',
-  setup () {
+  setup() {
     return {
-      tabList
-    }
-  }
-})
+      tabList,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

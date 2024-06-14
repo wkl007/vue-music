@@ -2,17 +2,12 @@
   <div class="search-list">
     <transition-group name="list" tag="ul">
       <li
-        class="search-item"
         v-for="item in searches"
         :key="item"
-        @click="selectItem(item)"
-      >
+        class="search-item"
+        @click="selectItem(item)">
         <span class="text">{{ item }}</span>
-        <span
-          class="icon"
-          v-if="showDelete"
-          @click.stop="deleteItem(item)"
-        >
+        <span v-if="showDelete" class="icon" @click.stop="deleteItem(item)">
           <i class="icon-delete"></i>
         </span>
       </li>
@@ -20,42 +15,41 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import type { Song } from '@/types/api/recommend'
+<script>
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'SearchList',
   props: {
     /** 搜索列表 */
     searches: {
-      type: Array as PropType<Song[]>,
-      default: () => []
+      type: Array,
+      default: () => [],
     },
     /** 显示删除图标 */
     showDelete: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   emits: ['select', 'delete'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     /** 选中某项 */
-    function selectItem (song: Song): void {
-      emit('select', song)
+    function selectItem(song) {
+      emit('select', song);
     }
 
     /** 删除某项 */
-    function deleteItem (song: Song): void {
-      emit('delete', song)
+    function deleteItem(song) {
+      emit('delete', song);
     }
 
     return {
       selectItem,
-      deleteItem
-    }
-  }
-})
+      deleteItem,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

@@ -4,31 +4,31 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { useScroll } from '@/components/base/scroll/use-scroll'
+<script>
+import { defineComponent, ref } from 'vue';
+import { useScroll } from '@/components/base/scroll/use-scroll.js';
 
 export default defineComponent({
   name: 'Scroll',
   props: {
     click: {
       type: Boolean,
-      default: true
+      default: true,
     },
     probeType: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   emits: ['scroll'],
-  setup (props, { emit }) {
-    const rootRef = ref<HTMLDivElement>(document.createElement('div'))
-    const scroll = useScroll(rootRef, props, emit)
+  setup(props, { emit }) {
+    const rootRef = ref();
+    const scroll = useScroll(rootRef, props, emit);
 
     return {
       rootRef,
-      scroll
-    }
-  }
-})
+      scroll,
+    };
+  },
+});
 </script>

@@ -1,51 +1,45 @@
 <template>
-  <div class="slider" ref="rootRef">
+  <div ref="rootRef" class="slider">
     <div class="slider-group">
-      <div
-        class="slider-page"
-        v-for="item in sliders"
-        :key="item.id"
-      >
+      <div v-for="item in sliders" :key="item.id" class="slider-page">
         <a :href="item.link">
-          <img :src="item.pic" alt="">
+          <img :src="item.pic" alt="" />
         </a>
       </div>
     </div>
     <div class="dots-wrapper">
       <span
-        class="dot"
-        v-for="(item,index) in sliders"
+        v-for="(item, index) in sliders"
         :key="item.id"
-        :class="{'active': currentPageIndex === index}"
-      />
+        class="dot"
+        :class="{ active: currentPageIndex === index }" />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
-import useSlider from './use-slider'
-import type { Slider } from '@/types/api/recommend'
+<script>
+import { defineComponent, ref } from 'vue';
+import useSlider from './use-slider.js';
 
 export default defineComponent({
   name: 'Slider',
   props: {
     /** 歌手列表 */
     sliders: {
-      type: Array as PropType<Slider[]>,
-      default: () => []
-    }
+      type: Array,
+      default: () => [],
+    },
   },
-  setup () {
-    const rootRef = ref<HTMLDivElement>(document.createElement('div'))
-    const { currentPageIndex } = useSlider(rootRef)
+  setup() {
+    const rootRef = ref();
+    const { currentPageIndex } = useSlider(rootRef);
 
     return {
       rootRef,
-      currentPageIndex
-    }
-  }
-})
+      currentPageIndex,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

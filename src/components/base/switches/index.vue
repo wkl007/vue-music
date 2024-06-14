@@ -1,54 +1,53 @@
 <template>
   <ul class="switches">
     <li
-      class="switch-item"
       v-for="(item, index) in items"
       :key="item"
-      :class="{'active':modelValue === index}"
-      @click="switchItem(index)"
-    >
+      class="switch-item"
+      :class="{ active: modelValue === index }"
+      @click="switchItem(index)">
       <span>{{ item }}</span>
     </li>
     <li class="active-bar" :style="activeStyle"></li>
   </ul>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script>
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'Switches',
   props: {
     items: {
-      type: Array as PropType<string[]>,
-      default: () => []
+      type: Array,
+      default: () => [],
     },
     modelValue: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   emits: ['update:modelValue'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const activeStyle = computed(() => {
-      const x = 120 * props.modelValue
+      const x = 120 * props.modelValue;
       return {
-        transform: `translate3d(${x}px, 0, 0)`
-      }
-    })
+        transform: `translate3d(${x}px, 0, 0)`,
+      };
+    });
 
     /** 选中某项 */
-    function switchItem (index: number): void {
-      emit('update:modelValue', index)
+    function switchItem(index) {
+      emit('update:modelValue', index);
     }
 
     return {
       activeStyle,
 
-      switchItem
-    }
-  }
-})
+      switchItem,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

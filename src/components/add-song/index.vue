@@ -1,7 +1,7 @@
 <template>
   <teleport to="body">
     <transition name="slide">
-      <div class="add-song" v-show="visible">
+      <div v-show="visible" class="add-song">
         <div class="header">
           <h1 class="title">添加歌曲到列表</h1>
           <div class="close" @click="hide">
@@ -9,50 +9,39 @@
           </div>
         </div>
         <div class="search-input-wrapper">
-          <search-input
-            v-model="query"
-            placeholder="搜索歌曲"
-          />
+          <search-input v-model="query" placeholder="搜索歌曲" />
         </div>
         <div v-show="!query">
-          <switches
-            :items="['最近播放','搜索历史']"
-            v-model="currentIndex"
-          />
+          <switches v-model="currentIndex" :items="['最近播放', '搜索历史']" />
           <div class="list-wrapper">
             <scroll
+              v-if="currentIndex === 0"
               ref="scrollRef"
-              class="list-scroll"
-              v-if="currentIndex===0"
-            >
+              class="list-scroll">
               <div class="list-inner">
                 <song-list
                   :songs="playHistory"
-                  @select="selectSongBySongList"
-                />
+                  @select="selectSongBySongList" />
               </div>
             </scroll>
             <scroll
+              v-if="currentIndex === 1"
               ref="scrollRef"
-              class="list-scroll"
-              v-if="currentIndex===1"
-            >
+              class="list-scroll">
               <div class="list-inner">
                 <search-list
                   :searches="searchHistory"
                   :show-delete="false"
-                  @select="addQuery"
-                />
+                  @select="addQuery" />
               </div>
             </scroll>
           </div>
         </div>
-        <div class="search-result" v-show="query">
+        <div v-show="query" class="search-result">
           <suggest
             :query="query"
             :show-singer="false"
-            @select-song="selectSongBySuggest"
-          />
+            @select-song="selectSongBySuggest" />
         </div>
         <message ref="messageRef">
           <div class="message-title">
@@ -65,32 +54,24 @@
   </teleport>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
-import { useStore } from 'vuex'
-import SearchInput from '../search/search-input.vue'
-import Suggest from '../search/suggest.vue'
-import Scroll from '../base/scroll/index.vue'
-import SongList from '../base/song-list/index.vue'
-import SearchList from '../base/search-list/index.vue'
-import Message from '../base/message/index.vue'
-import Switches from '../base/switches/index.vue'
-import { useSearchHistory } from '../search/use-search-history'
-import type { Song } from '@/types/api/recommend'
-import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
-
-interface State {
-  /** 显示隐藏 */
-  visible: boolean;
-  /** 搜索参数 */
-  query: string;
-  /** 当前索引 */
-  currentIndex: number;
-  /** scroll 实例 */
-  scrollRef: BScrollConstructor | undefined;
-  /** message 实例 */
-  messageRef: any;
-}
+<script>
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  reactive,
+  toRefs,
+  watch,
+} from 'vue';
+import { useStore } from 'vuex';
+import SearchInput from '../search/search-input.vue';
+import Suggest from '../search/suggest.vue';
+import Scroll from '../base/scroll/index.vue';
+import SongList from '../base/song-list/index.vue';
+import SearchList from '../base/search-list/index.vue';
+import Message from '../base/message/index.vue';
+import Switches from '../base/switches/index.vue';
+import { useSearchHistory } from '../search/use-search-history.js';
 
 export default defineComponent({
   name: 'AddSong',
@@ -101,76 +82,76 @@ export default defineComponent({
     SongList,
     SearchList,
     Message,
-    Switches
+    Switches,
   },
-  setup () {
-    const store = useStore()
-    const state = reactive<State>({
+  setup() {
+    const store = useStore();
+    const state = reactive({
       visible: false,
       query: '',
       currentIndex: 0,
       scrollRef: undefined,
-      messageRef: document.createElement('div')
-    })
+      messageRef: document.createElement('div'),
+    });
 
-    const searchHistory = computed(() => store.state.searchHistory)
-    const playHistory = computed(() => store.state.playHistory)
+    const searchHistory = computed(() => store.state.searchHistory);
+    const playHistory = computed(() => store.state.playHistory);
 
     // hooks
-    const { saveSearch } = useSearchHistory()
+    const { saveSearch } = useSearchHistory();
 
     /** 显示 */
-    async function show () {
-      state.visible = true
-      await nextTick()
-      refreshScroll()
+    async function show() {
+      state.visible = true;
+      await nextTick();
+      refreshScroll();
     }
 
     /** 隐藏 */
-    function hide () {
-      state.visible = false
+    function hide() {
+      state.visible = false;
     }
 
     /** 强制刷新 */
-    function refreshScroll () {
-      state.scrollRef?.scroll.refresh()
+    function refreshScroll() {
+      state.scrollRef?.scroll.refresh();
     }
 
     /** 添加搜索参数 */
-    function addQuery (query: string): void {
-      state.query = query.trim()
+    function addQuery(query) {
+      state.query = query.trim();
     }
 
     /** 歌曲列表点击 */
-    function selectSongBySongList ({ song }: { song: Song }) {
-      addSong(song)
+    function selectSongBySongList({ song }) {
+      addSong(song);
     }
 
     /** 建议列表点击 */
-    function selectSongBySuggest (song: Song) {
-      addSong(song)
-      saveSearch(state.query)
+    function selectSongBySuggest(song) {
+      addSong(song);
+      saveSearch(state.query);
     }
 
     /** 添加歌曲 */
-    function addSong (song: Song): void {
-      store.dispatch('addSong', song)
-      showMessage()
+    function addSong(song) {
+      store.dispatch('addSong', song);
+      showMessage();
     }
 
     /** 显示 message */
-    function showMessage (): void {
-      state.messageRef.show()
+    function showMessage() {
+      state.messageRef.show();
     }
 
     watch(
       () => state.query,
       async (newQuery) => {
-        if (newQuery) return
-        await nextTick()
-        refreshScroll()
-      }
-    )
+        if (newQuery) return;
+        await nextTick();
+        refreshScroll();
+      },
+    );
 
     return {
       ...toRefs(state),
@@ -181,10 +162,10 @@ export default defineComponent({
       hide,
       addQuery,
       selectSongBySongList,
-      selectSongBySuggest
-    }
-  }
-})
+      selectSongBySuggest,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

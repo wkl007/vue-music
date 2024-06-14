@@ -1,12 +1,11 @@
 <template>
   <ul class="song-list">
     <li
-      class="item"
-      v-for="(item,index) in songs"
+      v-for="(item, index) in songs"
       :key="item.id"
-      @click="selectItem(item,index)"
-    >
-      <div class="rank" v-if="rank">
+      class="item"
+      @click="selectItem(item, index)">
+      <div v-if="rank" class="rank">
         <span :class="getRankCls(index)">{{ getRankText(index) }}</span>
       </div>
       <div class="content">
@@ -17,48 +16,47 @@
   </ul>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import type { Song } from '@/types/api/recommend'
+<script>
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'SongList',
   props: {
     /** 歌曲列表 */
     songs: {
-      type: Array as PropType<Song[]>,
-      default: () => []
+      type: Array,
+      default: () => [],
     },
     /** 是否排行榜 */
     rank: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['select'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     /** 详情描述 */
-    function getDesc (item: Song): string {
-      return `${item.singer}-${item.album}`
+    function getDesc(item) {
+      return `${item.singer}-${item.album}`;
     }
 
     /** 排行图标 */
-    function getRankCls (index: number): string {
+    function getRankCls(index) {
       if (index <= 2) {
-        return `icon icon${index}`
+        return `icon icon${index}`;
       } else {
-        return 'text'
+        return 'text';
       }
     }
 
     /** 排行文案 */
-    function getRankText (index: number): number | undefined {
-      if (index > 2) return index + 1
+    function getRankText(index) {
+      if (index > 2) return index + 1;
     }
 
     /** 选择歌曲 */
-    function selectItem (song: Song, index: number): void {
-      emit('select', { song, index })
+    function selectItem(song, index) {
+      emit('select', { song, index });
     }
 
     return {
@@ -66,10 +64,10 @@ export default defineComponent({
       getRankCls,
       getRankText,
 
-      selectItem
-    }
-  }
-})
+      selectItem,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">
@@ -94,15 +92,15 @@ export default defineComponent({
         background-size: 25px 24px;
 
         &.icon0 {
-          .bg-image("first");
+          .bg-image('first');
         }
 
         &.icon1 {
-          .bg-image("second");
+          .bg-image('second');
         }
 
         &.icon2 {
-          .bg-image("third");
+          .bg-image('third');
         }
       }
 

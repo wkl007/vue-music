@@ -8,12 +8,12 @@
 
 ## 技术架构
 
-- Vue-cli 5.0
-- Vue 3.0
-- Vuex 4.0
-- Vue-router 4.0
-- axios 0.21.1
-- less 4.0.0
+- Vite 5.2
+- Vue 3.4
+- Vuex 4.1
+- Vue-router 4.3
+- axios 1.7
+- less 4.2
 
 ## 本地运行
 
@@ -25,10 +25,10 @@ git clone https://github.com/wkl007/vue-music.git
 
 ### 安装依赖
 ```shell
-yarn || npm install
+pnpm install
 ```
 
 ### 启动服务
 ```shell
-yarn serve || npm run serve
+pnpm dev
 ```

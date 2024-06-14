@@ -5,15 +5,13 @@
       :height="radius"
       viewBox="0 0 100 100"
       version="1.1"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <circle
         class="progress-background"
         r="50"
         cx="50"
         cy="50"
-        fill="transparent"
-      />
+        fill="transparent" />
       <circle
         class="progress-bar"
         r="50"
@@ -21,15 +19,14 @@
         cy="50"
         fill="transparent"
         :stroke-dasharray="dashArray"
-        :stroke-dashoffset="dashOffset"
-      />
+        :stroke-dashoffset="dashOffset" />
     </svg>
-    <slot/>
+    <slot />
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+<script>
+import { computed, defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'ProgressCircle',
@@ -37,26 +34,26 @@ export default defineComponent({
     /** 半径 */
     radius: {
       type: Number,
-      default: 100
+      default: 100,
     },
     /** 进度 */
     progress: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
-  setup (props) {
+  setup(props) {
     /** 周长 */
-    const dashArray = ref(Math.PI * 100)
+    const dashArray = ref(Math.PI * 100);
     /** 播放进度 线性负相关 */
-    const dashOffset = computed(() => (1 - props.progress) * dashArray.value)
+    const dashOffset = computed(() => (1 - props.progress) * dashArray.value);
 
     return {
       dashArray,
-      dashOffset
-    }
-  }
-})
+      dashOffset,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

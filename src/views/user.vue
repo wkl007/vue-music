@@ -1,87 +1,78 @@
 <template>
-  <div
-    class="user"
-    v-no-result:[noResultText]="noResult"
-  >
+  <div v-no-result:[noResultText]="noResult" class="user">
     <div class="back" @click="back">
       <i class="icon-back"></i>
     </div>
     <div class="switches-wrapper">
-      <switches
-        :items="['我喜欢的', '最近播放']"
-        v-model="currentIndex"
-      />
+      <switches v-model="currentIndex" :items="['我喜欢的', '最近播放']" />
     </div>
-    <div
-      class="play-btn"
-      v-if="currentList.length"
-      @click="random"
-    >
+    <div v-if="currentList.length" class="play-btn" @click="random">
       <i class="icon-play"></i>
       <span class="text">随机播放全部</span>
     </div>
     <div class="list-wrapper">
-      <scroll class="list-scroll" v-if="currentIndex===0">
+      <scroll v-if="currentIndex === 0" class="list-scroll">
         <div class="list-inner">
-          <song-list
-            :songs="favoriteList"
-            @select="selectSong"
-          />
+          <song-list :songs="favoriteList" @select="selectSong" />
         </div>
       </scroll>
-      <scroll class="list-scroll" v-if="currentIndex===1">
+      <scroll v-if="currentIndex === 1" class="list-scroll">
         <div class="list-inner">
-          <song-list
-            :songs="playHistory"
-            @select="selectSong"
-          />
+          <song-list :songs="playHistory" @select="selectSong" />
         </div>
       </scroll>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import { Switches, Scroll, SongList } from '@/components'
-import type { Song } from '@/types/api/recommend'
+<script>
+import { computed, defineComponent, reactive, toRefs } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { Scroll, SongList, Switches } from '@/components/index.js';
 
 export default defineComponent({
   name: 'User',
   components: {
     Switches,
     Scroll,
-    SongList
+    SongList,
   },
-  setup () {
-    const router = useRouter()
-    const store = useStore()
+  setup() {
+    const router = useRouter();
+    const store = useStore();
     const state = reactive({
-      currentIndex: 0
-    })
+      currentIndex: 0,
+    });
 
-    const favoriteList = computed(() => store.state.favoriteList)
-    const playHistory = computed(() => store.state.playHistory)
+    const favoriteList = computed(() => store.state.favoriteList);
+    const playHistory = computed(() => store.state.playHistory);
 
-    const noResult = computed(() => state.currentIndex === 0 ? !favoriteList.value.length : !playHistory.value.length)
-    const noResultText = computed(() => state.currentIndex === 0 ? '暂无收藏歌曲' : '您还没有听过歌曲')
-    const currentList = computed(() => state.currentIndex === 0 ? favoriteList.value : playHistory.value)
+    const noResult = computed(() =>
+      state.currentIndex === 0
+        ? !favoriteList.value.length
+        : !playHistory.value.length,
+    );
+    const noResultText = computed(() =>
+      state.currentIndex === 0 ? '暂无收藏歌曲' : '您还没有听过歌曲',
+    );
+    const currentList = computed(() =>
+      state.currentIndex === 0 ? favoriteList.value : playHistory.value,
+    );
 
     /** 返回上一页 */
-    function back () {
-      router.back()
+    function back() {
+      router.back();
     }
 
     /** 选中歌曲 */
-    function selectSong ({ song }: { song: Song }) {
-      store.dispatch('addSong', song)
+    function selectSong({ song }) {
+      store.dispatch('addSong', song);
     }
 
     /** 随机播放 */
-    function random () {
-      store.dispatch('randomPlay', currentList.value)
+    function random() {
+      store.dispatch('randomPlay', currentList.value);
     }
 
     return {
@@ -94,10 +85,10 @@ export default defineComponent({
 
       back,
       selectSong,
-      random
-    }
-  }
-})
+      random,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

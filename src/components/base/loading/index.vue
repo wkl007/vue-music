@@ -1,41 +1,36 @@
 <template>
   <div class="loading">
     <div class="loading-content">
-      <img
-        width="24"
-        height="24"
-        :src="images.loading"
-        alt=""
-      >
+      <img width="24" height="24" :src="images.loading" alt="" />
       <p class="desc">{{ title }}</p>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, inject, reactive, toRefs } from 'vue'
-import images from '@/assets/images'
+<script>
+import { defineComponent, inject, reactive, toRefs } from 'vue';
+import images from '@/assets/images';
 
 export default defineComponent({
   name: 'Loading',
-  setup () {
+  setup() {
     const state = reactive({
       title: '正在载入...',
-      images: inject('images', images)
-    })
+      images: inject('images', images),
+    });
 
     /** 设置标题 */
-    function setTitle (title: string) {
-      state.title = title
+    function setTitle(title) {
+      state.title = title;
     }
 
     return {
       ...toRefs(state),
 
-      setTitle
-    }
-  }
-})
+      setTitle,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">

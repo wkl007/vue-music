@@ -1,107 +1,91 @@
 <template>
   <transition name="mini">
-    <div
-      class="mini-player"
-      v-show="!fullScreen"
-      @click="showNormalPlayer"
-    >
+    <div v-show="!fullScreen" class="mini-player" @click="showNormalPlayer">
       <div class="cd-wrapper">
-        <div
-          ref="cdRef"
-          class="cd">
+        <div ref="cdRef" class="cd">
           <img
             ref="cdImageRef"
             :class="cdCls"
             width="40"
             height="40"
             :src="currentSong.pic"
-            alt=""
-          >
+            alt="" />
         </div>
       </div>
-      <div
-        ref="sliderWrapperRef"
-        class="slider-wrapper"
-      >
+      <div ref="sliderWrapperRef" class="slider-wrapper">
         <div class="slider-group">
-          <div
-            class="slider-page"
-            v-for="item in playList"
-            :key="item.id"
-          >
+          <div v-for="item in playList" :key="item.id" class="slider-page">
             <h2 class="name">{{ item.name }}</h2>
             <p class="desc">{{ item.singer }}</p>
           </div>
         </div>
       </div>
       <div class="control">
-        <progress-circle
-          :radius="32"
-          :progress="progress"
-        >
+        <progress-circle :radius="32" :progress="progress">
           <i
             class="icon-mini"
             :class="miniPlayIcon"
-            @click.stop="togglePlay"
-          ></i>
+            @click.stop="togglePlay"></i>
         </progress-circle>
       </div>
       <div class="control" @click.stop="showPlayList">
         <i class="icon-playlist"></i>
       </div>
-      <play-list ref="playListRef"/>
+      <play-list ref="playListRef" />
     </div>
   </transition>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
-import { useStore } from 'vuex'
-import ProgressCircle from './progress-circle.vue'
-import PlayList from './play-list.vue'
-import { useCd } from './use-cd'
-import { useMiniSlider } from './use-mini-slider'
-import * as types from '@/store/mutationTypes'
+<script>
+import { computed, defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
+import ProgressCircle from './progress-circle.vue';
+import PlayList from './play-list.vue';
+import { useCd } from './use-cd.js';
+import { useMiniSlider } from './use-mini-slider.js';
+import * as types from '@/store/mutationTypes.js';
 
 export default defineComponent({
   name: 'MiniPlayer',
   components: {
     ProgressCircle,
-    PlayList
+    PlayList,
   },
   props: {
     /** 播放进度 */
     progress: {
       type: Number,
-      default: 0
+      default: 0,
     },
     /** 播放/暂停播放 */
     togglePlay: {
       type: Function,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
-  setup () {
-    const store = useStore()
-    const playListRef = ref()
+  setup() {
+    const store = useStore();
+    const playListRef = ref();
 
-    const fullScreen = computed(() => store.state.fullScreen)
-    const currentSong = computed(() => store.getters.currentSong)
-    const playing = computed(() => store.state.playing)
-    const playList = computed(() => store.state.playList)
-    const miniPlayIcon = computed(() => playing.value ? 'icon-pause-mini' : 'icon-play-mini')
+    const fullScreen = computed(() => store.state.fullScreen);
+    const currentSong = computed(() => store.getters.currentSong);
+    const playing = computed(() => store.state.playing);
+    const playList = computed(() => store.state.playList);
+    const miniPlayIcon = computed(() =>
+      playing.value ? 'icon-pause-mini' : 'icon-play-mini',
+    );
 
-    const { cdCls, cdRef, cdImageRef } = useCd()
-    const { sliderWrapperRef } = useMiniSlider()
+    const { cdCls, cdRef, cdImageRef } = useCd();
+    const { sliderWrapperRef } = useMiniSlider();
 
     /** 显示全屏播放器 */
-    function showNormalPlayer (): void {
-      store.commit(types.SET_FULL_SCREEN, true)
+    function showNormalPlayer() {
+      store.commit(types.SET_FULL_SCREEN, true);
     }
 
     /** 显示播放列表 */
-    function showPlayList (): void {
-      playListRef.value.show()
+    function showPlayList() {
+      playListRef.value.show();
     }
 
     return {
@@ -117,10 +101,10 @@ export default defineComponent({
       sliderWrapperRef,
 
       showNormalPlayer,
-      showPlayList
-    }
-  }
-})
+      showPlayList,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less">
