@@ -26,7 +26,24 @@ export default defineConfig({
     vue(),
     configureServer(),
     VitePWA({
-      manifest: {},
+      manifest: {
+        name: 'Chicken Music',
+        short_name: 'Chicken Music',
+        description: 'Chicken Music By Vue 3.0',
+        theme_color: '#222',
+        icons: [
+          {
+            src: 'img/icons/android-chrome-maskable-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'img/icons/android-chrome-maskable-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
       workbox: {
         skipWaiting: true,
         clientsClaim: true,
