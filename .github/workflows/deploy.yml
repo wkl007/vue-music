@@ -1,5 +1,4 @@
-#name: Build And Deploy TO Aliyun ECS
-name: Lint And Build
+name: Vue Music
 
 on:
   push:
@@ -11,19 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '18' ]
+        node: [ '22' ]
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: master
-      - name: use Node.js ${{ matrix.node }}
+          ref: main
+      - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
-      - name: use Pnpm
+      - name: Use Pnpm
         run: npm install -g pnpm
-      - name: install
+      - name: Lint
         run: |
           pnpm install
           pnpm lint
