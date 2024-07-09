@@ -1,16 +1,17 @@
-name: Build And Deploy TO Aliyun ECS
+#name: Build And Deploy TO Aliyun ECS
+name: Lint And Build
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '16' ]
+        node: [ '18' ]
     steps:
       - name: checkout
         uses: actions/checkout@v2
