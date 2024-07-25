@@ -8,10 +8,10 @@
 
 ## 技术架构
 
-- Vite 5.2
+- Vite 5.3
 - Vue 3.4
 - Vuex 4.1
-- Vue-router 4.3
+- Vue-router 4.4
 - axios 1.7
 - less 4.2
 
