@@ -80,7 +80,7 @@
     "stylelint-less": "^3.0.1",
     "stylelint-order": "^6.0.4",
     "stylelint-prettier": "^5.0.2",
-    "vite": "^6.0.7",
+    "vite": "^6.0.9",
     "vite-plugin-commonjs": "^0.10.4",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-pwa": "^0.21.1",
