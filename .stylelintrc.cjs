@@ -18,5 +18,7 @@ module.exports = {
     'at-rule-no-unknown': null,
     'font-family-no-missing-generic-family-keyword': null,
     'selector-type-no-unknown': null,
+    'declaration-property-value-keyword-no-deprecated': null,
+    'declaration-property-value-no-unknown': null,
   },
 };
