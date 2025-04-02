@@ -75,7 +75,7 @@ import { SINGER_KEY } from '@/utils/constants';
 import { saveSessionStorage } from '@/utils/cache';
 
 export default defineComponent({
-  name: 'Search',
+  name: 'SearchPage',
   components: {
     SearchInput,
     Scroll,
